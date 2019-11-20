@@ -1,15 +1,18 @@
 package attendance.system.central.controller;
 
+import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Teacher;
 import attendance.system.central.models.payload.JwtAuthenticationResponse;
 import attendance.system.central.models.payload.LoginRequest;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtTokenProvider;
+import attendance.system.central.security.UserPrincipal;
 import attendance.system.central.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +49,19 @@ public class TeacherController {
     @GetMapping
     public Teacher getTeacherById(@PathVariable @NotBlank String id) {
         return teacherService.getTeacherById(id);
+    }
+
+    @RequestMapping(Endpoints.Teachers.Sections)
+    @GetMapping
+    public List<Section> getTeacherSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return teacherService.getTeacherSections(userPrincipal.getUsername());
+    }
+
+    @RequestMapping(Endpoints.Teachers.SectionById)
+    @GetMapping
+    public Section getTeacherSectionById(@PathVariable @NotBlank String id,
+                                         @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return teacherService.getTeacherSectionById(userPrincipal.getUsername(), id);
     }
 
     @RequestMapping(Endpoints.Teachers.Signup)

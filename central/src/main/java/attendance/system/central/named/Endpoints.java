@@ -24,6 +24,9 @@ public class Endpoints {
         public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
+
+        public final static String Sections = Base + "/sections";
+        public final static String SectionById = Sections + "/{id}";
     }
 
     public static class Devices {
