@@ -8,8 +8,8 @@ import javax.persistence.*;
  * @author Nitesh (niteshsrivats.k@gmail.com)
  */
 
-@Entity(name = "students")
-public class Student {
+@Entity(name = "devices")
+public class Device {
     @Id
     @GeneratedValue
     @JsonIgnore

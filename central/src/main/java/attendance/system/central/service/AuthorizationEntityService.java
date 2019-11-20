@@ -26,7 +26,6 @@ public class AuthorizationEntityService implements UserDetailsService {
         this.authorizationEntityRepository = authorizationEntityRepository;
     }
 
-
     @Transactional
     public Boolean entityExists(String id) {
         return authorizationEntityRepository.existsById(id);
@@ -37,13 +36,5 @@ public class AuthorizationEntityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         AuthorizationEntity authorizationEntity = authorizationEntityRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User with id " + id + " not found"));
         return UserPrincipal.create(authorizationEntity);
-    }
-
-    @Transactional
-    public AuthorizationEntity addUser(AuthorizationEntity authorizationEntity) {
-        if (entityExists(authorizationEntity.getId())) {
-            throw new DuplicateEntityException(AuthorizationEntity.class, authorizationEntity.getId());
-        }
-        return authorizationEntityRepository.save(authorizationEntity);
     }
 }

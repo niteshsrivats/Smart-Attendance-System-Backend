@@ -2,6 +2,7 @@ package attendance.system.central.models.entities;
 
 import attendance.system.central.models.constants.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,24 +13,21 @@ import java.util.Objects;
 
 @Entity(name = "entities")
 public class AuthorizationEntity {
-
     @Id
-    @GeneratedValue
-    @JsonIgnore
-    private Long rowId;
-
     @Column(nullable = false, unique = true, updatable = false)
     private String id;
 
     @Column(nullable = false)
-//    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private UserType userType;
 
     public AuthorizationEntity() {
+
     }
 
     public AuthorizationEntity(String id, String password, UserType userType) {
@@ -41,9 +39,7 @@ public class AuthorizationEntity {
     @Override
     public String toString() {
         return "AuthorizationEntity{" +
-                "rowId=" + rowId +
                 ", id='" + id + '\'' +
-                ", password='" + password + '\'' +
                 ", userType=" + userType +
                 '}';
     }
@@ -56,14 +52,6 @@ public class AuthorizationEntity {
         return Objects.equals(id, that.id) &&
                 Objects.equals(password, that.password) &&
                 userType == that.userType;
-    }
-
-    public Long getRowId() {
-        return rowId;
-    }
-
-    private void setRowId(Long rowId) {
-        this.rowId = rowId;
     }
 
     public String getId() {
