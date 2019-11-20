@@ -1,5 +1,6 @@
 package attendance.system.central.config;
 
+import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtAuthenticationEntryPoint;
 import attendance.system.central.service.AuthorizationEntityService;
 import attendance.system.central.service.http.RequestEncapsulatingFilter;
@@ -85,7 +86,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/v1/students/signup", "/v1/students/signin")
+                .antMatchers(HttpMethod.POST,
+                        Endpoints.Students.Signup,
+                        Endpoints.Students.Signin,
+                        Endpoints.Teachers.Signup,
+                        Endpoints.Teachers.Signin)
                 .permitAll()
 //                .antMatchers("/v1/students/*")
 //                .hasAnyAuthority("STUDENT")

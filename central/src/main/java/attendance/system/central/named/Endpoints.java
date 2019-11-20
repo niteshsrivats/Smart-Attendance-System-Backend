@@ -8,16 +8,21 @@ import static attendance.system.central.named.Placeholders.VersionPrefix;
 
 public class Endpoints {
 
+    public final static String Courses = VersionPrefix + "courses";
+    public final static String Departments = VersionPrefix + "departments";
+    public final static String Semesters = VersionPrefix + "semesters";
+
     public static class Students {
         public final static String Base = VersionPrefix + "students";
-        public final static String GetById = VersionPrefix + "students/{id}";
+        public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
     }
 
-    public final static String Courses = VersionPrefix + "courses";
-
-    public final static String Departments = VersionPrefix + "departments";
-
-    public final static String Semesters = VersionPrefix + "semesters";
+    public static class Teachers {
+        public final static String Base = VersionPrefix + "teachers";
+        public final static String GetById = Base + "/{id}";
+        public final static String Signup = Base + "/signup";
+        public final static String Signin = Base + "/signin";
+    }
 }

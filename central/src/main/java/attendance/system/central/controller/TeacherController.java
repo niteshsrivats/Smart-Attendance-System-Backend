@@ -1,11 +1,11 @@
 package attendance.system.central.controller;
 
-import attendance.system.central.models.entities.Student;
+import attendance.system.central.models.entities.Teacher;
 import attendance.system.central.models.payload.JwtAuthenticationResponse;
 import attendance.system.central.models.payload.LoginRequest;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtTokenProvider;
-import attendance.system.central.service.StudentService;
+import attendance.system.central.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,40 +24,39 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class StudentController {
-
-    private final StudentService studentService;
+public class TeacherController {
+    private final TeacherService teacherService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public StudentController(StudentService studentService, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
-        this.studentService = studentService;
+    public TeacherController(TeacherService teacherService, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.teacherService = teacherService;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @RequestMapping(Endpoints.Students.Base)
+    @RequestMapping(Endpoints.Teachers.Base)
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public List<Teacher> getTeachers() {
+        return teacherService.getTeachers();
     }
 
-    @RequestMapping(Endpoints.Students.GetById)
+    @RequestMapping(Endpoints.Teachers.GetById)
     @GetMapping
-    public Student getStudentById(@PathVariable @NotBlank String id) {
-        return studentService.getStudentById(id);
+    public Teacher getTeacherById(@PathVariable @NotBlank String id) {
+        return teacherService.getTeacherById(id);
     }
 
-    @RequestMapping(Endpoints.Students.Signup)
+    @RequestMapping(Endpoints.Teachers.Signup)
     @PostMapping
-    public Student registerStudent(@RequestBody @Valid @NotNull Student student) {
-        return studentService.addStudent(student);
+    public Teacher registerTeacher(@RequestBody @Valid @NotNull Teacher teacher) {
+        return teacherService.addTeacher(teacher);
     }
 
-    @RequestMapping(Endpoints.Students.Signin)
+    @RequestMapping(Endpoints.Teachers.Signin)
     @PostMapping
-    public JwtAuthenticationResponse authenticateStudent(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
+    public JwtAuthenticationResponse authenticateTeacher(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getId(),

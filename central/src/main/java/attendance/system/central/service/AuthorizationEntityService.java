@@ -1,6 +1,5 @@
 package attendance.system.central.service;
 
-import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.models.entities.AuthorizationEntity;
 import attendance.system.central.repositories.postgres.AuthorizationEntityRepository;
 import attendance.system.central.security.UserPrincipal;
