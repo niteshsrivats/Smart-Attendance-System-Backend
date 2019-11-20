@@ -25,4 +25,11 @@ public class Endpoints {
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
     }
+
+    public static class Devices {
+        public final static String Base = VersionPrefix + "devices";
+        public final static String GetById = Base + "/{id}";
+        public final static String Signup = Base + "/signup";
+        public final static String Signin = Base + "/signin";
+    }
 }

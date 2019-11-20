@@ -90,7 +90,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Endpoints.Students.Signup,
                         Endpoints.Students.Signin,
                         Endpoints.Teachers.Signup,
-                        Endpoints.Teachers.Signin)
+                        Endpoints.Teachers.Signin
+                        Endpoints.Devices.Signup,
+                        Endpoints.Devices.Signin)
                 .permitAll()
 //                .antMatchers("/v1/students/*")
 //                .hasAnyAuthority("STUDENT")
