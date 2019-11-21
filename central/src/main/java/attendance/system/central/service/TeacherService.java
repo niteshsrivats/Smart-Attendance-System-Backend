@@ -2,7 +2,7 @@ package attendance.system.central.service;
 
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
-import attendance.system.central.models.constants.UserType;
+import attendance.system.central.models.constants.EntityType;
 import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Teacher;
 import attendance.system.central.repositories.postgres.TeacherRepository;
@@ -61,11 +61,11 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
-        if (authorizationEntityService.entityExists(teacher.getEntity().getId())) {
-            throw new DuplicateEntityException(Teacher.class, teacher.getEntity().getId());
+        if (authorizationEntityService.entityExists(teacher.getId())) {
+            throw new DuplicateEntityException(Teacher.class, teacher.getId());
         }
         teacher.getEntity().setPassword(passwordEncoder.encode(teacher.getEntity().getPassword()));
-        teacher.getEntity().setUserType(UserType.TEACHER);
+        teacher.getEntity().setEntityType(EntityType.TEACHER);
         return teacherRepository.save(teacher);
     }
 

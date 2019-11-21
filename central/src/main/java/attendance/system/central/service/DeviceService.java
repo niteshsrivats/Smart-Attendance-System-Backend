@@ -2,7 +2,7 @@ package attendance.system.central.service;
 
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
-import attendance.system.central.models.constants.UserType;
+import attendance.system.central.models.constants.EntityType;
 import attendance.system.central.models.entities.Device;
 import attendance.system.central.repositories.postgres.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +37,12 @@ public class DeviceService {
         return deviceRepository.findDeviceByEntity_Id(id).orElseThrow(() -> new EntityNotFoundException(Device.class, id));
     }
 
-    public Device addDevice(Device teacher) {
-        if (authorizationEntityService.entityExists(teacher.getEntity().getId())) {
-            throw new DuplicateEntityException(Device.class, teacher.getEntity().getId());
+    public Device addDevice(Device device) {
+        if (authorizationEntityService.entityExists(device.getId())) {
+            throw new DuplicateEntityException(Device.class, device.getEntity().getId());
         }
-        teacher.getEntity().setPassword(passwordEncoder.encode(teacher.getEntity().getPassword()));
-        teacher.getEntity().setUserType(UserType.STUDENT);
-        return deviceRepository.save(teacher);
+        device.getEntity().setPassword(passwordEncoder.encode(device.getEntity().getPassword()));
+        device.getEntity().setEntityType(EntityType.DEVICE);
+        return deviceRepository.save(device);
     }
 }

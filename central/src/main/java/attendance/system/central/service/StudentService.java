@@ -2,7 +2,7 @@ package attendance.system.central.service;
 
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
-import attendance.system.central.models.constants.UserType;
+import attendance.system.central.models.constants.EntityType;
 import attendance.system.central.models.entities.Student;
 import attendance.system.central.repositories.postgres.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,11 @@ public class StudentService {
     }
 
     public Student addStudent(Student student) {
-        if (authorizationEntityService.entityExists(student.getEntity().getId())) {
-            throw new DuplicateEntityException(Student.class, student.getEntity().getId());
+        if (authorizationEntityService.entityExists(student.getId())) {
+            throw new DuplicateEntityException(Student.class, student.getId());
         }
         student.getEntity().setPassword(passwordEncoder.encode(student.getEntity().getPassword()));
-        student.getEntity().setUserType(UserType.STUDENT);
+        student.getEntity().setEntityType(EntityType.STUDENT);
         return studentRepository.save(student);
     }
 }

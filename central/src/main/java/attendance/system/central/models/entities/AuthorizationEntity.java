@@ -1,6 +1,6 @@
 package attendance.system.central.models.entities;
 
-import attendance.system.central.models.constants.UserType;
+import attendance.system.central.models.constants.EntityType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,23 +24,23 @@ public class AuthorizationEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @JsonIgnore
-    private UserType userType;
+    private EntityType entityType;
 
     public AuthorizationEntity() {
 
     }
 
-    public AuthorizationEntity(String id, String password, UserType userType) {
+    public AuthorizationEntity(String id, String password, EntityType entityType) {
         this.id = id;
         this.password = password;
-        this.userType = userType;
+        this.entityType = entityType;
     }
 
     @Override
     public String toString() {
         return "AuthorizationEntity{" +
                 ", id='" + id + '\'' +
-                ", userType=" + userType +
+                ", entityType=" + entityType +
                 '}';
     }
 
@@ -51,7 +51,7 @@ public class AuthorizationEntity {
         AuthorizationEntity that = (AuthorizationEntity) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(password, that.password) &&
-                userType == that.userType;
+                entityType == that.entityType;
     }
 
     public String getId() {
@@ -70,11 +70,11 @@ public class AuthorizationEntity {
         this.password = password;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
     }
 }

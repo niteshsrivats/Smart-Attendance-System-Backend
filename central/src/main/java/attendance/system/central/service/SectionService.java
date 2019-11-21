@@ -44,7 +44,7 @@ public class SectionService {
 
     @Transactional
     public Teacher getSectionTeacherById(String sectionId, String teacherId) {
-        for (Teacher teacher: getSectionTeachers(sectionId)) {
+        for (Teacher teacher : getSectionTeachers(sectionId)) {
             if (teacher.getId().equals(teacherId)) {
                 return teacher;
             }
