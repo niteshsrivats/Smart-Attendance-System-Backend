@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -25,7 +26,7 @@ public class Teacher {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Section.class)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Section> sections;
+    private Set<Section> sections;
 
     @Override
     public String toString() {
@@ -60,11 +61,15 @@ public class Teacher {
         this.name = name;
     }
 
-    public List<Section> getSections() {
+    public Set<Section> getSections() {
         return sections;
     }
 
-    public void setSections(List<Section> sections) {
+    public void setSections(Set<Section> sections) {
         this.sections = sections;
+    }
+
+    public String getId() {
+        return entity.getId();
     }
 }

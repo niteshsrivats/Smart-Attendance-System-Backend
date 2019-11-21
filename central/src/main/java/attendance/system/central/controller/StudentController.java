@@ -37,26 +37,22 @@ public class StudentController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @RequestMapping(Endpoints.Students.Base)
-    @GetMapping
+    @GetMapping(Endpoints.Students.Base)
     public List<Student> getStudents() {
         return studentService.getStudents();
     }
 
-    @RequestMapping(Endpoints.Students.GetById)
-    @GetMapping
+    @GetMapping(Endpoints.Students.GetById)
     public Student getStudentById(@PathVariable @NotBlank String id) {
         return studentService.getStudentById(id);
     }
 
-    @RequestMapping(Endpoints.Students.Signup)
-    @PostMapping
+    @PostMapping(Endpoints.Students.Signup)
     public Student registerStudent(@RequestBody @Valid @NotNull Student student) {
         return studentService.addStudent(student);
     }
 
-    @RequestMapping(Endpoints.Students.Signin)
-    @PostMapping
+    @PostMapping(Endpoints.Students.Signin)
     public JwtAuthenticationResponse authenticateStudent(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

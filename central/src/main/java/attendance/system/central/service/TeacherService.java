@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -24,12 +25,14 @@ public class TeacherService {
     private final AuthorizationEntityService authorizationEntityService;
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SectionService sectionService;
 
     @Autowired
-    public TeacherService(AuthorizationEntityService authorizationEntityService, TeacherRepository teacherRepository, PasswordEncoder passwordEncoder) {
+    public TeacherService(AuthorizationEntityService authorizationEntityService, TeacherRepository teacherRepository, PasswordEncoder passwordEncoder, SectionService sectionService) {
         this.authorizationEntityService = authorizationEntityService;
         this.teacherRepository = teacherRepository;
         this.passwordEncoder = passwordEncoder;
+        this.sectionService = sectionService;
     }
 
     public List<Teacher> getTeachers() {
@@ -41,7 +44,7 @@ public class TeacherService {
     }
 
     @Transactional
-    public List<Section> getTeacherSections(String id) {
+    public Set<Section> getTeacherSections(String id) {
         Teacher teacher = getTeacherById(id);
         Hibernate.initialize(teacher.getSections());
         return teacher.getSections();
@@ -49,7 +52,6 @@ public class TeacherService {
 
     @Transactional
     public Section getTeacherSectionById(String teacherId, String sectionId) {
-        // TODO test
         for (Section section : getTeacherById(teacherId).getSections()) {
             if (section.getId().equals(sectionId)) {
                 return section;
@@ -63,7 +65,14 @@ public class TeacherService {
             throw new DuplicateEntityException(Teacher.class, teacher.getEntity().getId());
         }
         teacher.getEntity().setPassword(passwordEncoder.encode(teacher.getEntity().getPassword()));
-        teacher.getEntity().setUserType(UserType.STUDENT);
+        teacher.getEntity().setUserType(UserType.TEACHER);
+        return teacherRepository.save(teacher);
+    }
+
+    @Transactional
+    public Teacher addSectionToTeacher(String id, String sectionId) {
+        Teacher teacher = getTeacherById(id);
+        teacher.getSections().add(sectionService.getSectionById(sectionId));
         return teacherRepository.save(teacher);
     }
 }

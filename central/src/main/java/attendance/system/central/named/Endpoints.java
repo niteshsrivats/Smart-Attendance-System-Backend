@@ -25,8 +25,8 @@ public class Endpoints {
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
 
-        public final static String Sections = Base + "/sections";
-        public final static String SectionById = Sections + "/{id}";
+        public final static String Sections = GetById + "/sections";
+        public final static String SectionById = Sections + "/{sectionId}";
     }
 
     public static class Devices {
@@ -34,5 +34,12 @@ public class Endpoints {
         public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
+    }
+
+    public static class Sections {
+        public final static String Base = VersionPrefix + "sections";
+        public final static String GetById = Base + "/{id}";
+        public final static String Teachers = GetById + "/teachers";
+        public final static String TeacherById = Teachers + "/{teacherId}";
     }
 }

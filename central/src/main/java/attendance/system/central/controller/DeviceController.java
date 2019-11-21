@@ -36,26 +36,22 @@ public class DeviceController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @RequestMapping(Endpoints.Devices.Base)
-    @GetMapping
+    @GetMapping(Endpoints.Devices.Base)
     public List<Device> getDevices() {
         return deviceService.getDevices();
     }
 
-    @RequestMapping(Endpoints.Devices.GetById)
-    @GetMapping
+    @GetMapping(Endpoints.Devices.GetById)
     public Device getDeviceById(@PathVariable @NotBlank String id) {
         return deviceService.getDeviceById(id);
     }
 
-    @RequestMapping(Endpoints.Devices.Signup)
-    @PostMapping
+    @PostMapping(Endpoints.Devices.Signup)
     public Device registerDevice(@RequestBody @Valid @NotNull Device device) {
         return deviceService.addDevice(device);
     }
 
-    @RequestMapping(Endpoints.Devices.Signin)
-    @PostMapping
+    @PostMapping(Endpoints.Devices.Signin)
     public JwtAuthenticationResponse authenticateDevice(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

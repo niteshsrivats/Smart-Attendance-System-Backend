@@ -6,13 +6,11 @@ import attendance.system.central.models.payload.JwtAuthenticationResponse;
 import attendance.system.central.models.payload.LoginRequest;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtTokenProvider;
-import attendance.system.central.security.UserPrincipal;
 import attendance.system.central.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -39,39 +38,33 @@ public class TeacherController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @RequestMapping(Endpoints.Teachers.Base)
-    @GetMapping
+    @GetMapping(Endpoints.Teachers.Base)
     public List<Teacher> getTeachers() {
         return teacherService.getTeachers();
     }
 
-    @RequestMapping(Endpoints.Teachers.GetById)
-    @GetMapping
+    @GetMapping(Endpoints.Teachers.GetById)
     public Teacher getTeacherById(@PathVariable @NotBlank String id) {
         return teacherService.getTeacherById(id);
     }
 
-    @RequestMapping(Endpoints.Teachers.Sections)
-    @GetMapping
-    public List<Section> getTeacherSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return teacherService.getTeacherSections(userPrincipal.getUsername());
+    @GetMapping(Endpoints.Teachers.Sections)
+    public Set<Section> getTeacherSections(@PathVariable @NotBlank String id) {
+        return teacherService.getTeacherSections(id);
     }
 
-    @RequestMapping(Endpoints.Teachers.SectionById)
-    @GetMapping
+    @GetMapping(Endpoints.Teachers.SectionById)
     public Section getTeacherSectionById(@PathVariable @NotBlank String id,
-                                         @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return teacherService.getTeacherSectionById(userPrincipal.getUsername(), id);
+                                         @PathVariable @NotBlank String sectionId) {
+        return teacherService.getTeacherSectionById(id, sectionId);
     }
 
-    @RequestMapping(Endpoints.Teachers.Signup)
-    @PostMapping
+    @PostMapping(Endpoints.Teachers.Signup)
     public Teacher registerTeacher(@RequestBody @Valid @NotNull Teacher teacher) {
         return teacherService.addTeacher(teacher);
     }
 
-    @RequestMapping(Endpoints.Teachers.Signin)
-    @PostMapping
+    @PostMapping(Endpoints.Teachers.Signin)
     public JwtAuthenticationResponse authenticateTeacher(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -84,5 +77,11 @@ public class TeacherController {
 
         String jwt = jwtTokenProvider.generateToken(authentication);
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    @PatchMapping(Endpoints.Teachers.SectionById)
+    public Teacher addSectionToTeacher(@PathVariable @NotBlank String id,
+                                       @PathVariable @NotBlank String sectionId) {
+        return teacherService.addSectionToTeacher(id, sectionId);
     }
 }

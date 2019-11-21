@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity(name = "sections")
 public class Section {
+
     @Id
     @GeneratedValue
     @JsonIgnore
@@ -25,7 +26,7 @@ public class Section {
 
     @ManyToMany(mappedBy = "sections")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Teacher> teachers;
+    private Set<Teacher> teachers;
 
     public Long getRowId() {
         return rowId;
@@ -51,11 +52,11 @@ public class Section {
         this.name = name;
     }
 
-    public List<Teacher> getTeachers() {
+    public Set<Teacher> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
+    public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
     }
 }
