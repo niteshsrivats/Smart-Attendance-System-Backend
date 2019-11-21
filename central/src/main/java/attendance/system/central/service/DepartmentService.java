@@ -101,6 +101,13 @@ public class DepartmentService {
         return teachers;
     }
 
+    @Transactional
+    public List<Room> getDepartmentRooms(String id) {
+        Department department = getDepartmentById(id);
+        Hibernate.initialize(department.getRooms());
+        return department.getRooms();
+    }
+
     public Department addDepartment(Department department) {
         try {
             getDepartmentById(department.getId());

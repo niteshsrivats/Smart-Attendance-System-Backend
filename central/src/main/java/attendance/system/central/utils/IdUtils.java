@@ -1,6 +1,7 @@
 package attendance.system.central.utils;
 
 import attendance.system.central.models.entities.Course;
+import attendance.system.central.models.entities.Room;
 import attendance.system.central.models.entities.Section;
 
 /**
@@ -14,14 +15,23 @@ public class IdUtils {
 
     }
 
-    public static String generateCourseId(Course course) {
-        String courseName = course.getName().trim();
-        StringBuilder abbreviation = new StringBuilder(courseName.substring(0, 1).toUpperCase());
-        for (int i = 1; i < course.getName().length() - 1; i++) {
-            if (courseName.substring(i, i + 1).equals(" ")) {
-                abbreviation.append(courseName.substring(i + 1, i + 2).toUpperCase());
+    private static String abbreviate(String id) {
+        id = id.trim();
+        StringBuilder abbreviation = new StringBuilder(id.substring(0, 1).toUpperCase());
+        for (int i = 1; i < id.length() - 1; i++) {
+            if (id.substring(i, i + 1).equals(" ")) {
+                abbreviation.append(id.substring(i + 1, i + 2).toUpperCase());
             }
         }
+        return abbreviation.toString();
+    }
+
+    public static String generateCourseId(Course course) {
+        String abbreviation = abbreviate(course.getName());
         return ((course.getYear() % 100) + course.getDepartment().getId().toUpperCase() + course.getSemester() + abbreviation);
+    }
+
+    public static String generateRoomId(Room room) {
+        return room.getDepartment().getId() + "-" + room.getNumber();
     }
 }

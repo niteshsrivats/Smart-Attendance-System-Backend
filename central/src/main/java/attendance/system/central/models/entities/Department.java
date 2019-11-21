@@ -38,6 +38,10 @@ public class Department {
     @JsonIgnore
     private List<Teacher> teachers;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    @JsonIgnore
+    private List<Room> rooms;
+
     public Long getRowId() {
         return rowId;
     }
@@ -92,5 +96,13 @@ public class Department {
 
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 }

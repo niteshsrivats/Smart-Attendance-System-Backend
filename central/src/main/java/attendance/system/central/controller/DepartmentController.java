@@ -58,6 +58,11 @@ public class DepartmentController {
         return departmentService.getDepartmentTeachers(id);
     }
 
+    @GetMapping(Endpoints.Departments.Rooms)
+    public List<Room> getDepartmentRooms(@PathVariable @NotBlank String id) {
+        return departmentService.getDepartmentRooms(id);
+    }
+
     @PostMapping(Endpoints.Departments.Base)
     public Department addDepartment(@RequestBody @Valid @NotNull Department department) {
         return departmentService.addDepartment(department);

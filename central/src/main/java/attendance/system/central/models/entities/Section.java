@@ -31,6 +31,10 @@ public class Section {
     @Column(nullable = false)
     private Byte semester;
 
+    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer room;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Department department;
@@ -105,5 +109,13 @@ public class Section {
 
     public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    public Integer getRoom() {
+        return room;
+    }
+
+    public void setRoom(Integer room) {
+        this.room = room;
     }
 }
