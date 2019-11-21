@@ -1,8 +1,11 @@
 package attendance.system.central.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -10,24 +13,33 @@ import javax.persistence.*;
 
 @Entity(name = "students")
 public class Student {
+
     @Id
     @GeneratedValue
     @JsonIgnore
     private Long rowId;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, targetEntity = AuthorizationEntity.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private AuthorizationEntity entity;
 
     @Column(nullable = false)
     private String name;
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                ", entity=" + entity +
-                ", name='" + name + '\'' +
-                ", '" + super.toString() + '\'' +
-                '}';
+    @Column(nullable = false)
+    private Integer graduationYear;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Section> sections;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Department department;
+
+    public String getId() {
+        return entity.getId();
     }
 
     public Long getRowId() {
@@ -54,7 +66,27 @@ public class Student {
         this.name = name;
     }
 
-    public String getId() {
-        return entity.getId();
+    public Integer getGraduationYear() {
+        return graduationYear;
+    }
+
+    public void setGraduationYear(Integer graduationYear) {
+        this.graduationYear = graduationYear;
+    }
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

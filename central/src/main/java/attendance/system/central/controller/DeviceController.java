@@ -1,22 +1,23 @@
 package attendance.system.central.controller;
 
 import attendance.system.central.models.entities.Device;
+import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.payload.JwtAuthenticationResponse;
 import attendance.system.central.models.payload.LoginRequest;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtTokenProvider;
+import attendance.system.central.security.UserPrincipal;
 import attendance.system.central.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -37,13 +38,8 @@ public class DeviceController {
     }
 
     @GetMapping(Endpoints.Devices.Base)
-    public List<Device> getDevices() {
-        return deviceService.getDevices();
-    }
-
-    @GetMapping(Endpoints.Devices.GetById)
-    public Device getDeviceById(@PathVariable @NotBlank String id) {
-        return deviceService.getDeviceById(id);
+    public Device getDevice(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return deviceService.getDevice(userPrincipal.getUsername());
     }
 
     @PostMapping(Endpoints.Devices.Signup)
@@ -64,5 +60,11 @@ public class DeviceController {
 
         String jwt = jwtTokenProvider.generateToken(authentication);
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    @PatchMapping(Endpoints.Devices.Sections)
+    public Device updateDeviceSection(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                      @RequestBody @Valid @NotNull Section section) {
+        return deviceService.updateSection(userPrincipal.getUsername(), section);
     }
 }

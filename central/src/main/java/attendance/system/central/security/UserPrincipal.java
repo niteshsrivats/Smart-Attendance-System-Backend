@@ -25,10 +25,10 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal create(AuthorizationEntity authorizationEntity) {
-        GrantedAuthority authority = new SimpleGrantedAuthority(authorizationEntity.getEntityType().toString());
+        GrantedAuthority authority = new SimpleGrantedAuthority(authorizationEntity.getType().toString());
 
         return new UserPrincipal(
-                new AuthorizationEntity(authorizationEntity.getId(), authorizationEntity.getPassword(), authorizationEntity.getEntityType()),
+                new AuthorizationEntity(authorizationEntity.getId(), authorizationEntity.getPassword(), authorizationEntity.getType()),
                 authority
         );
     }
@@ -53,7 +53,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> authority = new ArrayList<>();
-        authority.add(new SimpleGrantedAuthority(authorizationEntity.getEntityType().toString()));
+        authority.add(new SimpleGrantedAuthority(authorizationEntity.getType().toString()));
         return authority;
     }
 

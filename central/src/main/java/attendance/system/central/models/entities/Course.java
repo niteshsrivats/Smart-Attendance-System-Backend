@@ -4,28 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
  */
 
-@Entity(name = "sections")
-public class Section {
-
+@Entity(name = "courses")
+public class Course {
     @Id
     @GeneratedValue
     @JsonIgnore
     private Long rowId;
 
     @Column(nullable = false, unique = true, updatable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @Column(nullable = false)
-    private Character section;
+    private String name;
 
     @Column(nullable = false)
     private Integer year;
@@ -33,17 +29,16 @@ public class Section {
     @Column(nullable = false)
     private Byte semester;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @Column(nullable = false)
+    private Boolean valid;
+
+    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Department department;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Map<Course, Teacher> courseTeacherMap;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "sections")
-    @JsonIgnore
-    private Set<Student> students;
+    @ManyToMany(mappedBy = "courses")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Set<Teacher> teachers;
 
     public Long getRowId() {
         return rowId;
@@ -61,12 +56,12 @@ public class Section {
         this.id = id;
     }
 
-    public Character getSection() {
-        return section;
+    public String getName() {
+        return name;
     }
 
-    public void setSection(Character section) {
-        this.section = section;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getYear() {
@@ -85,13 +80,13 @@ public class Section {
         this.semester = semester;
     }
 
-    public Set<Teacher> getTeachers() {
-        return new HashSet<>();
+    public Boolean getValid() {
+        return valid;
     }
 
-//    public void setTeachers(Set<Teacher> teachers) {
-//        this.teachers = teachers;
-//    }
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
 
     public Department getDepartment() {
         return department;
@@ -99,5 +94,13 @@ public class Section {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Set<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 }

@@ -1,6 +1,6 @@
 package attendance.system.central.repositories.postgres;
 
-import attendance.system.central.models.entities.Student;
+import attendance.system.central.models.entities.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-    Optional<Student> findStudentByEntity_Id(String id);
+    Optional<Department> findDepartmentById(String id);
 }

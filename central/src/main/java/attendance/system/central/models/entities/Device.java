@@ -1,6 +1,7 @@
 package attendance.system.central.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -15,19 +16,19 @@ public class Device {
     @JsonIgnore
     private Long rowId;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, targetEntity = AuthorizationEntity.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private AuthorizationEntity entity;
 
     @Column(nullable = false)
     private String name;
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                ", entity=" + entity +
-                ", name='" + name + '\'' +
-                ", '" + super.toString() + '\'' +
-                '}';
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Section section;
+
+    public String getId() {
+        return entity.getId();
     }
 
     public Long getRowId() {
@@ -54,7 +55,11 @@ public class Device {
         this.name = name;
     }
 
-    public String getId() {
-        return entity.getId();
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 }

@@ -1,20 +1,22 @@
 package attendance.system.central.controller;
 
+import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Student;
 import attendance.system.central.models.payload.JwtAuthenticationResponse;
 import attendance.system.central.models.payload.LoginRequest;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.security.JwtTokenProvider;
+import attendance.system.central.security.UserPrincipal;
 import attendance.system.central.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -38,13 +40,13 @@ public class StudentController {
     }
 
     @GetMapping(Endpoints.Students.Base)
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public Student getStudent(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return studentService.getStudent(userPrincipal.getUsername());
     }
 
-    @GetMapping(Endpoints.Students.GetById)
-    public Student getStudentById(@PathVariable @NotBlank String id) {
-        return studentService.getStudentById(id);
+    @GetMapping(Endpoints.Students.Sections)
+    public List<Section> getStudentSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return studentService.getStudentSections(userPrincipal.getUsername());
     }
 
     @PostMapping(Endpoints.Students.Signup)
@@ -65,5 +67,11 @@ public class StudentController {
 
         String jwt = jwtTokenProvider.generateToken(authentication);
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    @PatchMapping(Endpoints.Students.Sections)
+    public Student addStudentSection(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                     @RequestBody @Valid @NotNull Section section) {
+        return studentService.addSectionToStudent(userPrincipal.getUsername(), section);
     }
 }

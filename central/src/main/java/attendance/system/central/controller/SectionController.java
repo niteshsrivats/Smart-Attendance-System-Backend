@@ -42,12 +42,6 @@ public class SectionController {
         return sectionService.getSectionTeachers(id);
     }
 
-    @GetMapping(Endpoints.Sections.TeacherById)
-    public Teacher getTeacherSectionById(@PathVariable @NotBlank String id,
-                                         @PathVariable @NotBlank String teacherId) {
-        return sectionService.getSectionTeacherById(id, teacherId);
-    }
-
     @PostMapping(Endpoints.Sections.Base)
     public Section addSection(@RequestBody @Valid @NotNull Section section) {
         return sectionService.addSection(section);

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,23 +19,31 @@ public class Teacher {
     @JsonIgnore
     private Long rowId;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, targetEntity = AuthorizationEntity.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private AuthorizationEntity entity;
 
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Section.class)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<Section> sections;
+    @Column(nullable = false)
+    @JsonIgnore
+    private Boolean valid;
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                ", entity=" + entity +
-                ", name='" + name + '\'' +
-                ", '" + super.toString() + '\'' +
-                '}';
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Section> sections;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Set<Course> courses;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+    private Department department;
+
+    public String getId() {
+        return entity.getId();
     }
 
     public Long getRowId() {
@@ -60,15 +70,35 @@ public class Teacher {
         this.name = name;
     }
 
-    public Set<Section> getSections() {
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
+
+    public List<Section> getSections() {
         return sections;
     }
 
-    public void setSections(Set<Section> sections) {
+    public void setSections(List<Section> sections) {
         this.sections = sections;
     }
 
-    public String getId() {
-        return entity.getId();
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

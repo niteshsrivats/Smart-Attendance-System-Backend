@@ -1,11 +1,9 @@
 package attendance.system.central.models.entities;
 
 import attendance.system.central.models.constants.EntityType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -23,35 +21,16 @@ public class AuthorizationEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @JsonIgnore
-    private EntityType entityType;
+    private EntityType type;
 
     public AuthorizationEntity() {
 
     }
 
-    public AuthorizationEntity(String id, String password, EntityType entityType) {
+    public AuthorizationEntity(String id, String password, EntityType type) {
         this.id = id;
         this.password = password;
-        this.entityType = entityType;
-    }
-
-    @Override
-    public String toString() {
-        return "AuthorizationEntity{" +
-                ", id='" + id + '\'' +
-                ", entityType=" + entityType +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AuthorizationEntity)) return false;
-        AuthorizationEntity that = (AuthorizationEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(password, that.password) &&
-                entityType == that.entityType;
+        this.type = type;
     }
 
     public String getId() {
@@ -70,11 +49,11 @@ public class AuthorizationEntity {
         this.password = password;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public EntityType getType() {
+        return type;
     }
 
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
+    public void setType(EntityType type) {
+        this.type = type;
     }
 }

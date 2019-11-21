@@ -1,5 +1,6 @@
 package attendance.system.central.service;
 
+import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
 import attendance.system.central.models.entities.Section;
@@ -32,6 +33,9 @@ public class SectionService {
     }
 
     public Section getSectionById(String id) {
+        if (id == null) {
+            throw new BadRequestException("Section id cannot be null.");
+        }
         return this.sectionRepository.findSectionById(id).orElseThrow(() -> new EntityNotFoundException(Section.class, id));
     }
 
@@ -44,6 +48,9 @@ public class SectionService {
 
     @Transactional
     public Teacher getSectionTeacherById(String sectionId, String teacherId) {
+        if (teacherId == null) {
+            throw new BadRequestException("Teacher id cannot be null.");
+        }
         for (Teacher teacher : getSectionTeachers(sectionId)) {
             if (teacher.getId().equals(teacherId)) {
                 return teacher;
@@ -54,6 +61,7 @@ public class SectionService {
 
     public Section addSection(Section section) {
         try {
+            section.setId(section.getSemester().toString() + section.getSection() + section.getDepartment().getId() + "-" + section.getYear());
             getSectionById(section.getId());
             throw new DuplicateEntityException(Section.class, section.getId());
         } catch (EntityNotFoundException e) {
