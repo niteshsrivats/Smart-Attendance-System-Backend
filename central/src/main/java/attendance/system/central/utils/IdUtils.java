@@ -17,7 +17,7 @@ public class IdUtils {
     public static String generateCourseId(Course course) {
         String courseName = course.getName().trim();
         StringBuilder abbreviation = new StringBuilder(courseName.substring(0, 1).toUpperCase());
-        for(int i = 1; i < course.getName().length() - 1; i++) {
+        for (int i = 1; i < course.getName().length() - 1; i++) {
             if (courseName.substring(i, i + 1).equals(" ")) {
                 abbreviation.append(courseName.substring(i + 1, i + 2).toUpperCase());
             }

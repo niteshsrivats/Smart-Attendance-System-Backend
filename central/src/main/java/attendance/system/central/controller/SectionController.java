@@ -1,6 +1,8 @@
 package attendance.system.central.controller;
 
+import attendance.system.central.models.entities.Course;
 import attendance.system.central.models.entities.Section;
+import attendance.system.central.models.entities.Student;
 import attendance.system.central.models.entities.Teacher;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.service.SectionService;
@@ -11,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,13 +40,26 @@ public class SectionController {
         return sectionService.getSectionById(id);
     }
 
-    @GetMapping(Endpoints.Sections.Teachers)
-    public Set<Teacher> getSectionTeachers(@PathVariable @NotBlank String id) {
-        return sectionService.getSectionTeachers(id);
+    @GetMapping(Endpoints.Sections.Students)
+    public Set<Student> getSectionStudents(@PathVariable @NotBlank String id) {
+        return sectionService.getSectionStudents(id);
+    }
+
+    @GetMapping(Endpoints.Sections.Courses)
+    public Map<Course, Teacher> getSectionCourses(@PathVariable @NotBlank String id) {
+        return sectionService.getCourseTeacherMap(id);
     }
 
     @PostMapping(Endpoints.Sections.Base)
     public Section addSection(@RequestBody @Valid @NotNull Section section) {
         return sectionService.addSection(section);
+    }
+
+    @PatchMapping(Endpoints.Sections.CourseTeacherPair)
+    public Section addSection(
+            @PathVariable @NotBlank String id,
+            @PathVariable @NotBlank String teacherId,
+            @RequestBody @Valid @NotNull Course course) {
+        return sectionService.addCourseTeacherPair(id, teacherId, course);
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -43,6 +42,11 @@ public class Course {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "courses")
     @JsonIgnore
     private Set<Teacher> teachers;
+
+    @Override
+    public String toString() {
+        return id;
+    }
 
     public Long getRowId() {
         return rowId;

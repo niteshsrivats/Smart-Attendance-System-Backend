@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +20,6 @@ public class Section {
     private Long rowId;
 
     @Column(nullable = false, unique = true, updatable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @Column(nullable = false)
@@ -33,8 +31,8 @@ public class Section {
     @Column(nullable = false)
     private Byte semester;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Department department;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -85,19 +83,27 @@ public class Section {
         this.semester = semester;
     }
 
-    public Set<Teacher> getTeachers() {
-        return new HashSet<>();
-    }
-
-//    public void setTeachers(Set<Teacher> teachers) {
-//        this.teachers = teachers;
-//    }
-
     public Department getDepartment() {
         return department;
     }
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Map<Course, Teacher> getCourseTeacherMap() {
+        return courseTeacherMap;
+    }
+
+    public void setCourseTeacherMap(Map<Course, Teacher> courseTeacherMap) {
+        this.courseTeacherMap = courseTeacherMap;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 }

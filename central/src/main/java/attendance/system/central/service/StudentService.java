@@ -72,6 +72,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+    @Transactional
     public Student addSectionToStudent(String id, Section section) {
         Student student = getStudentById(id);
         Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(

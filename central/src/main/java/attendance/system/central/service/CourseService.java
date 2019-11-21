@@ -64,15 +64,14 @@ public class CourseService {
         if (course.getDepartment() == null) {
             throw new BadRequestException("Department cannot be null");
         }
-        String courseId = generateCourseId(course);
         try {
-            getCourseById(courseId);
+            course.setId(generateCourseId(course));
+            getCourseById(course.getId());
             throw new DuplicateEntityException(Course.class, course.getId());
         } catch (EntityNotFoundException e) {
             course.setDepartment(departmentRepository.findDepartmentById(course.getDepartment().getId()).orElseThrow(
                     () -> new EntityNotFoundException(Department.class, course.getDepartment().getId())));
             course.setValid(true);
-            course.setId(courseId);
         }
         return courseRepository.save(course);
     }

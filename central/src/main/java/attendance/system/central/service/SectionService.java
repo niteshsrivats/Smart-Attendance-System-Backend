@@ -3,8 +3,9 @@ package attendance.system.central.service;
 import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
-import attendance.system.central.models.entities.Section;
-import attendance.system.central.models.entities.Teacher;
+import attendance.system.central.models.entities.*;
+import attendance.system.central.repositories.postgres.CourseRepository;
+import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static attendance.system.central.utils.IdUtils.generateSectionId;
@@ -24,10 +26,16 @@ import static attendance.system.central.utils.IdUtils.generateSectionId;
 public class SectionService {
 
     private final SectionRepository sectionRepository;
+    private final DepartmentRepository departmentRepository;
+    private final CourseRepository courseRepository;
+    private final TeacherService teacherService;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository) {
+    public SectionService(SectionRepository sectionRepository, DepartmentRepository departmentRepository, CourseRepository courseRepository, TeacherService teacherService) {
         this.sectionRepository = sectionRepository;
+        this.departmentRepository = departmentRepository;
+        this.courseRepository = courseRepository;
+        this.teacherService = teacherService;
     }
 
     public List<Section> getSections() {
@@ -42,23 +50,23 @@ public class SectionService {
     }
 
     @Transactional
-    public Set<Teacher> getSectionTeachers(String sectionId) {
+    public Set<Student> getSectionStudents(String sectionId) {
         Section section = getSectionById(sectionId);
-        Hibernate.initialize(section.getTeachers());
-        return section.getTeachers();
+        for (Student student : section.getStudents()) {
+            Hibernate.initialize(student.getSections());
+        }
+        return section.getStudents();
     }
 
     @Transactional
-    public Teacher getSectionTeacherById(String sectionId, String teacherId) {
-        if (teacherId == null) {
-            throw new BadRequestException("Teacher id cannot be null.");
+    public Map<Course, Teacher> getCourseTeacherMap(String sectionId) {
+        Section section = getSectionById(sectionId);
+        Hibernate.initialize(section.getCourseTeacherMap());
+        for (Course course : section.getCourseTeacherMap().keySet()) {
+            Hibernate.initialize(section.getCourseTeacherMap().get(course).getSections());
+            Hibernate.initialize(section.getCourseTeacherMap().get(course).getCourses());
         }
-        for (Teacher teacher : getSectionTeachers(sectionId)) {
-            if (teacher.getId().equals(teacherId)) {
-                return teacher;
-            }
-        }
-        throw new EntityNotFoundException(Teacher.class, teacherId);
+        return section.getCourseTeacherMap();
     }
 
     public Section addSection(Section section) {
@@ -67,7 +75,22 @@ public class SectionService {
             getSectionById(section.getId());
             throw new DuplicateEntityException(Section.class, section.getId());
         } catch (EntityNotFoundException e) {
+            section.setDepartment(departmentRepository.findDepartmentById(section.getDepartment().getId()).orElseThrow(
+                    () -> new EntityNotFoundException(Department.class, section.getDepartment().getId())));
             return sectionRepository.save(section);
         }
+    }
+
+    @Transactional
+    public Section addCourseTeacherPair(String id, String teacherId, Course course) {
+        Section section = getSectionById(id);
+        Course newCourse = courseRepository.findById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId()));
+        Teacher teacher = teacherService.getTeacher(teacherId);
+        section.getCourseTeacherMap().put(newCourse, teacher);
+        Hibernate.initialize(section.getStudents());
+        if (!teacher.getCourses().contains(newCourse)) {
+            teacherService.addCourseToTeacher(teacherId, newCourse);
+        }
+        return sectionRepository.save(section);
     }
 }
