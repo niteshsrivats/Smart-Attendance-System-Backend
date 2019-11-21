@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -18,6 +19,8 @@ public class Course {
     private Long rowId;
 
     @Column(nullable = false, unique = true, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private String id;
 
     @Column(nullable = false)
@@ -30,14 +33,15 @@ public class Course {
     private Byte semester;
 
     @Column(nullable = false)
+    @JsonIgnore
     private Boolean valid;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Department department;
 
-    @ManyToMany(mappedBy = "courses")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "courses")
+    @JsonIgnore
     private Set<Teacher> teachers;
 
     public Long getRowId() {

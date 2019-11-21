@@ -8,6 +8,7 @@ import attendance.system.central.models.entities.Course;
 import attendance.system.central.models.entities.Department;
 import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Teacher;
+import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import attendance.system.central.repositories.postgres.TeacherRepository;
@@ -32,14 +33,16 @@ public class TeacherService {
     private final PasswordEncoder passwordEncoder;
     private final DepartmentRepository departmentRepository;
     private final SectionRepository sectionRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public TeacherService(AuthorizationEntityService authorizationEntityService, TeacherRepository teacherRepository, PasswordEncoder passwordEncoder, DepartmentRepository departmentRepository, SectionRepository sectionRepository) {
+    public TeacherService(AuthorizationEntityService authorizationEntityService, TeacherRepository teacherRepository, PasswordEncoder passwordEncoder, DepartmentRepository departmentRepository, SectionRepository sectionRepository, CourseRepository courseRepository) {
         this.authorizationEntityService = authorizationEntityService;
         this.teacherRepository = teacherRepository;
         this.passwordEncoder = passwordEncoder;
         this.departmentRepository = departmentRepository;
         this.sectionRepository = sectionRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Transactional
@@ -84,10 +87,25 @@ public class TeacherService {
     }
 
     @Transactional
+    public Teacher addCourseToTeacher(String id, Course course) {
+        Teacher teacher = getTeacherById(id);
+        teacher.getCourses().add(courseRepository.findById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId())));
+        Hibernate.initialize(teacher.getSections());
+        return teacherRepository.save(teacher);
+    }
+
+    @Transactional
     public Teacher addSectionToTeacher(String id, Section section) {
         Teacher teacher = getTeacherById(id);
         teacher.getSections().add(sectionRepository.findSectionById(section.getId()).orElseThrow(
                 () -> new EntityNotFoundException(Section.class, section.getId())));
+        Hibernate.initialize(teacher.getCourses());
         return teacherRepository.save(teacher);
+    }
+
+    public void deleteTeacher(String id) {
+        Teacher teacher = getTeacherById(id);
+        teacher.setValid(false);
+        teacherRepository.save(teacher);
     }
 }

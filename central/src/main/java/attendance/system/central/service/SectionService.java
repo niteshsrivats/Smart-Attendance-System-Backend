@@ -14,6 +14,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
+import static attendance.system.central.utils.IdUtils.generateSectionId;
+
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
  */
@@ -61,7 +63,7 @@ public class SectionService {
 
     public Section addSection(Section section) {
         try {
-            section.setId(section.getSemester().toString() + section.getSection() + section.getDepartment().getId() + "-" + section.getYear());
+            section.setId(generateSectionId(section));
             getSectionById(section.getId());
             throw new DuplicateEntityException(Section.class, section.getId());
         } catch (EntityNotFoundException e) {

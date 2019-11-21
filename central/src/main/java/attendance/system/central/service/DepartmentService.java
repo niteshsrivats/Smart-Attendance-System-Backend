@@ -27,6 +27,10 @@ public class DepartmentService {
         this.departmentRepository = departmentRepository;
     }
 
+    public List<Department> getDepartments() {
+        return departmentRepository.findAll();
+    }
+
     public Department getDepartmentById(String id) {
         if (id == null) {
             throw new BadRequestException("Department id cannot be null.");

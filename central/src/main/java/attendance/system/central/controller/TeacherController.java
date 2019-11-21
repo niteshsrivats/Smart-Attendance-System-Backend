@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
@@ -75,9 +76,20 @@ public class TeacherController {
         return new JwtAuthenticationResponse(jwt);
     }
 
-    @PatchMapping(Endpoints.Teachers.Sections)
-    public Teacher addSectionToTeacher(@AuthenticationPrincipal UserPrincipal userPrincipal,
+    @PatchMapping(Endpoints.Teachers.ExplicitIdCourses)
+    public Teacher addCourseToTeacher(@PathVariable @NotBlank String id,
+                                      @RequestBody @Valid @NotNull Course course) {
+        return teacherService.addCourseToTeacher(id, course);
+    }
+
+    @PatchMapping(Endpoints.Teachers.ExplicitIdSections)
+    public Teacher addSectionToTeacher(@PathVariable @NotBlank String id,
                                        @RequestBody @Valid @NotNull Section section) {
-        return teacherService.addSectionToTeacher(userPrincipal.getUsername(), section);
+        return teacherService.addSectionToTeacher(id, section);
+    }
+
+    @DeleteMapping(Endpoints.Teachers.GetById)
+    public void deleteTeacher(@PathVariable @NotBlank String id) {
+        teacherService.deleteTeacher(id);
     }
 }

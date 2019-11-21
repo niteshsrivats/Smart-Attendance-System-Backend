@@ -26,6 +26,11 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
+    @GetMapping(Endpoints.Departments.Base)
+    public List<Department> getDepartment() {
+        return departmentService.getDepartments();
+    }
+
     @GetMapping(Endpoints.Departments.GetById)
     public Department getDepartment(@PathVariable @NotBlank String id) {
         return departmentService.getDepartmentById(id);

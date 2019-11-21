@@ -8,7 +8,6 @@ import static attendance.system.central.named.Placeholders.VersionPrefix;
 
 public class Endpoints {
 
-    public final static String Courses = VersionPrefix + "courses";
     public final static String Semesters = VersionPrefix + "semesters";
 
     public static class Students {
@@ -22,11 +21,15 @@ public class Endpoints {
 
     public static class Teachers {
         public final static String Base = VersionPrefix + "teachers";
+        public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/signin";
 
         public final static String Sections = Base + "/sections";
         public final static String Courses = Base + "/courses";
+
+        public final static String ExplicitIdSections = GetById + "/sections";
+        public final static String ExplicitIdCourses = GetById + "/courses";
     }
 
     public static class Devices {
@@ -49,6 +52,12 @@ public class Endpoints {
         public final static String Courses = GetById + "/courses";
         public final static String Sections = GetById + "/sections";
         public final static String Students = GetById + "/students";
+        public final static String Teachers = GetById + "/teachers";
+    }
+
+    public static class Courses {
+        public final static String Base = VersionPrefix + "courses";
+        public final static String GetById = Base + "/{id}";
         public final static String Teachers = GetById + "/teachers";
     }
 }
