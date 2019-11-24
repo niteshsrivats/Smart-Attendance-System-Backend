@@ -41,11 +41,6 @@ public class TeacherController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @GetMapping(Endpoints.Teachers.Base)
-    public Teacher getTeacher(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return teacherService.getTeacher(userPrincipal.getUsername());
-    }
-
     @GetMapping(Endpoints.Teachers.Sections)
     public List<Section> getTeacherSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return teacherService.getTeacherSections(userPrincipal.getUsername());

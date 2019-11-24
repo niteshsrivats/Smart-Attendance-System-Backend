@@ -1,5 +1,6 @@
 package attendance.system.central.models.entities;
 
+import attendance.system.central.models.constants.EntityType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,6 +45,10 @@ public class Teacher {
 
     public String getId() {
         return entity.getId();
+    }
+
+    public EntityType getType() {
+        return entity.getType();
     }
 
     public Long getRowId() {
