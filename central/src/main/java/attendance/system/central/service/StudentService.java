@@ -4,9 +4,11 @@ import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
 import attendance.system.central.models.constants.EntityType;
+import attendance.system.central.models.entities.Course;
 import attendance.system.central.models.entities.Department;
 import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Student;
+import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import attendance.system.central.repositories.postgres.StudentRepository;
@@ -29,14 +31,16 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final DepartmentRepository departmentRepository;
     private final SectionRepository sectionRepository;
+    private final CourseRepository courseRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public StudentService(AuthorizationEntityService authorizationEntityService, StudentRepository studentRepository, DepartmentRepository departmentRepository, SectionRepository sectionRepository, PasswordEncoder passwordEncoder) {
+    public StudentService(AuthorizationEntityService authorizationEntityService, StudentRepository studentRepository, DepartmentRepository departmentRepository, SectionRepository sectionRepository, CourseRepository courseRepository, PasswordEncoder passwordEncoder) {
         this.authorizationEntityService = authorizationEntityService;
         this.studentRepository = studentRepository;
         this.departmentRepository = departmentRepository;
         this.sectionRepository = sectionRepository;
+        this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -75,9 +79,16 @@ public class StudentService {
     @Transactional
     public Student addSectionToStudent(String id, Section section) {
         Student student = getStudentById(id);
-        Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(
-                () -> new EntityNotFoundException(Section.class, section.getId()));
-        student.getSections().add(newSection);
+        student.getSections().add(sectionRepository.findSectionById(section.getId()).orElseThrow(
+                () -> new EntityNotFoundException(Section.class, section.getId())));
+        return student;
+    }
+
+    @Transactional
+    public Student addCourseToStudent(String id, Course course) {
+        Student student = getStudentById(id);
+        student.getCourses().add(courseRepository.findCourseById(course.getId()).orElseThrow(
+                () -> new EntityNotFoundException(Course.class, course.getId())));
         return student;
     }
 }

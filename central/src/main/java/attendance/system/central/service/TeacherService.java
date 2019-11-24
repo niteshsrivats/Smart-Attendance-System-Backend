@@ -89,7 +89,7 @@ public class TeacherService {
     @Transactional
     public Teacher addCourseToTeacher(String id, Course course) {
         Teacher teacher = getTeacherById(id);
-        teacher.getCourses().add(courseRepository.findById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId())));
+        teacher.getCourses().add(courseRepository.findCourseById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId())));
         Hibernate.initialize(teacher.getSections());
         return teacherRepository.save(teacher);
     }

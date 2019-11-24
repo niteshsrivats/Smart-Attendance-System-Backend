@@ -31,7 +31,7 @@ public class Section {
     @Column(nullable = false)
     private Byte semester;
 
-    @Column(nullable = false)
+    @Column
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer room;
 

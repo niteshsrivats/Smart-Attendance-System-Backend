@@ -35,8 +35,11 @@ public class Student {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @NotNull
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Department department;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Course> courses;
 
     public String getId() {
         return entity.getId();
@@ -88,5 +91,13 @@ public class Student {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

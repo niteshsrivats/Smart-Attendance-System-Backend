@@ -42,7 +42,7 @@ public class CourseService {
         if (id == null) {
             throw new BadRequestException("Course id cannot be null.");
         }
-        return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Course.class, id));
+        return courseRepository.findCourseById(id).orElseThrow(() -> new EntityNotFoundException(Course.class, id));
     }
 
     @Transactional

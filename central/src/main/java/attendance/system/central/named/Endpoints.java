@@ -10,6 +10,13 @@ public class Endpoints {
 
     public final static String Semesters = VersionPrefix + "semesters";
 
+    public static class Users {
+        public final static String Base = VersionPrefix + "users";
+        public final static String GetById = Base + "/{id}";
+
+        public final static String Sections = GetById + "/sections";
+    }
+
     public static class Students {
         public final static String Base = VersionPrefix + "students";
         public final static String GetById = Base + "/{id}";

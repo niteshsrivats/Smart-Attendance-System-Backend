@@ -29,13 +29,15 @@ public class SectionService {
     private final DepartmentRepository departmentRepository;
     private final CourseRepository courseRepository;
     private final TeacherService teacherService;
+    private final StudentService studentService;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository, DepartmentRepository departmentRepository, CourseRepository courseRepository, TeacherService teacherService) {
+    public SectionService(SectionRepository sectionRepository, DepartmentRepository departmentRepository, CourseRepository courseRepository, TeacherService teacherService, StudentService studentService) {
         this.sectionRepository = sectionRepository;
         this.departmentRepository = departmentRepository;
         this.courseRepository = courseRepository;
         this.teacherService = teacherService;
+        this.studentService = studentService;
     }
 
     public List<Section> getSections() {
@@ -84,13 +86,14 @@ public class SectionService {
     @Transactional
     public Section addCourseTeacherPair(String id, String teacherId, Course course) {
         Section section = getSectionById(id);
-        Course newCourse = courseRepository.findById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId()));
+        Course newCourse = courseRepository.findCourseById(course.getId()).orElseThrow(() -> new EntityNotFoundException(Course.class, course.getId()));
         Teacher teacher = teacherService.getTeacher(teacherId);
         section.getCourseTeacherMap().put(newCourse, teacher);
         Hibernate.initialize(section.getStudents());
         if (!teacher.getCourses().contains(newCourse)) {
             teacherService.addCourseToTeacher(teacherId, newCourse);
         }
+        // TODO add course for student using student service
         return sectionRepository.save(section);
     }
 }
