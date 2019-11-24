@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@CrossOrigin
 public class UserController {
     private final StudentService studentService;
     private final TeacherService teacherService;

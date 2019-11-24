@@ -21,7 +21,7 @@ public class Endpoints {
         public final static String Base = VersionPrefix + "students";
         public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
-        public final static String Signin = Base + "/signin";
+        public final static String Signin = Base + "/login";
 
         public final static String Sections = GetById + "/sections";
     }
@@ -30,7 +30,7 @@ public class Endpoints {
         public final static String Base = VersionPrefix + "teachers";
         public final static String GetById = Base + "/{id}";
         public final static String Signup = Base + "/signup";
-        public final static String Signin = Base + "/signin";
+        public final static String Signin = Base + "/login";
 
         public final static String Sections = Base + "/sections";
         public final static String Courses = Base + "/courses";
@@ -42,7 +42,7 @@ public class Endpoints {
     public static class Devices {
         public final static String Base = VersionPrefix + "devices";
         public final static String Signup = Base + "/signup";
-        public final static String Signin = Base + "/signin";
+        public final static String Signin = Base + "/login";
 
         public final static String Sections = Base + "/sections";
     }

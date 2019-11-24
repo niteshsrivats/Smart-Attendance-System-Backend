@@ -21,7 +21,6 @@ import java.util.Set;
  */
 
 @RestController
-@CrossOrigin
 public class SectionController {
     private final SectionService sectionService;
 

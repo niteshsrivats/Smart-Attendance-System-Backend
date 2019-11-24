@@ -28,7 +28,6 @@ import java.util.Set;
  */
 
 @RestController
-@CrossOrigin
 public class TeacherController {
     private final TeacherService teacherService;
     private final AuthenticationManager authenticationManager;
@@ -60,7 +59,7 @@ public class TeacherController {
     public JwtAuthenticationResponse authenticateTeacher(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getId(),
+                        loginRequest.getUsername(),
                         loginRequest.getPassword()
                 )
         );

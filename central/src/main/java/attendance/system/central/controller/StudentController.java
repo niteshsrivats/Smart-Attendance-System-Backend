@@ -25,7 +25,6 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin
 public class StudentController {
 
     private final StudentService studentService;
@@ -53,7 +52,7 @@ public class StudentController {
     public JwtAuthenticationResponse authenticateStudent(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getId(),
+                        loginRequest.getUsername(),
                         loginRequest.getPassword()
                 )
         );

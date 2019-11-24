@@ -18,7 +18,6 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
 public class CourseController {
     private final CourseService courseService;
 

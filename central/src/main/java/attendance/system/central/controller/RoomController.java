@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
  */
 
 @RestController
-@CrossOrigin
 public class RoomController {
     private final RoomService roomService;
 

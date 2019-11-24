@@ -24,7 +24,6 @@ import javax.validation.constraints.NotNull;
  */
 
 @RestController
-@CrossOrigin
 public class DeviceController {
     private final DeviceService deviceService;
     private final AuthenticationManager authenticationManager;
@@ -51,7 +50,7 @@ public class DeviceController {
     public JwtAuthenticationResponse authenticateDevice(@RequestBody @Valid @NotNull LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getId(),
+                        loginRequest.getUsername(),
                         loginRequest.getPassword()
                 )
         );
