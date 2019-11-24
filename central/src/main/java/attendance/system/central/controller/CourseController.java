@@ -27,8 +27,8 @@ public class CourseController {
     }
 
     @GetMapping(Endpoints.Courses.Base)
-    public List<Course> getCourses() {
-        return courseService.getCourses();
+    public List<Course> getCourses(@RequestParam(required = false) Integer year) {
+        return courseService.getCourses(year);
     }
 
     @GetMapping(Endpoints.Courses.GetById)
@@ -40,6 +40,7 @@ public class CourseController {
     public List<Teacher> getDepartmentCourses(@PathVariable @NotBlank String id) {
         return courseService.getCourseTeachers(id);
     }
+
 
     @PostMapping(Endpoints.Courses.Base)
     public Course addCourse(@RequestBody @Valid @NotNull Course course) {

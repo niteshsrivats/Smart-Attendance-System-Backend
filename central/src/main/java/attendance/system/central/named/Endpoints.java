@@ -32,9 +32,6 @@ public class Endpoints {
         public final static String Signup = Base + "/signup";
         public final static String Signin = Base + "/login";
 
-        public final static String Sections = Base + "/sections";
-        public final static String Courses = Base + "/courses";
-
         public final static String ExplicitIdSections = GetById + "/sections";
         public final static String ExplicitIdCourses = GetById + "/courses";
     }

@@ -11,7 +11,7 @@ import attendance.system.central.models.entities.Section;
 public class IdUtils {
 
     public static String generateSectionId(Section section) {
-        return section.getSemester().toString() + section.getSection() + section.getDepartment().getId().toUpperCase() + "-" + section.getYear();
+        return section.getSemester().toString() + section.getSection() + "-" + section.getDepartment().getId().toUpperCase() + "-" + section.getYear();
 
     }
 

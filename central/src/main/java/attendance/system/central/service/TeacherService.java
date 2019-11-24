@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,17 +63,37 @@ public class TeacherService {
     }
 
     @Transactional
-    public List<Section> getTeacherSections(String id) {
+    public List<Section> getTeacherSections(String id, Byte semester) {
         Teacher teacher = getTeacherById(id);
         Hibernate.initialize(teacher.getSections());
-        return teacher.getSections();
+        if (semester == null) {
+            return teacher.getSections();
+        } else {
+            ArrayList<Section> sections =  new ArrayList<>();
+            for (Section section: teacher.getSections()) {
+                if (section.getSemester().equals(semester)) {
+                    sections.add(section);
+                }
+            }
+            return sections;
+        }
     }
 
     @Transactional
-    public Set<Course> getTeacherCourses(String id) {
+    public Set<Course> getTeacherCourses(String id, Byte semester) {
         Teacher teacher = getTeacherById(id);
         Hibernate.initialize(teacher.getCourses());
-        return teacher.getCourses();
+        if (semester == null) {
+            return teacher.getCourses();
+        } else {
+            HashSet<Course> courses =  new HashSet<>();
+            for (Course course: teacher.getCourses()) {
+                if (course.getSemester().equals(semester)) {
+                    courses.add(course);
+                }
+            }
+            return courses;
+        }
     }
 
     public Teacher addTeacher(Teacher teacher) {

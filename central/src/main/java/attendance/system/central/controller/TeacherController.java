@@ -40,14 +40,21 @@ public class TeacherController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @GetMapping(Endpoints.Teachers.Sections)
-    public List<Section> getTeacherSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return teacherService.getTeacherSections(userPrincipal.getUsername());
+    @GetMapping(Endpoints.Teachers.GetById)
+    public Teacher getTeacher(@PathVariable @NotBlank String id) {
+        return teacherService.getTeacher(id);
     }
 
-    @GetMapping(Endpoints.Teachers.Courses)
-    public Set<Course> getTeacherCourses(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return teacherService.getTeacherCourses(userPrincipal.getUsername());
+    @GetMapping(Endpoints.Teachers.ExplicitIdSections)
+    public List<Section> getTeacherSections(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                            @RequestParam(required = false) Byte semester) {
+        return teacherService.getTeacherSections(userPrincipal.getUsername(), semester);
+    }
+
+    @GetMapping(Endpoints.Teachers.ExplicitIdCourses)
+    public Set<Course> getTeacherCourses(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                         @RequestParam(required = false) Byte semester) {
+        return teacherService.getTeacherCourses(userPrincipal.getUsername(), semester);
     }
 
     @PostMapping(Endpoints.Teachers.Signup)

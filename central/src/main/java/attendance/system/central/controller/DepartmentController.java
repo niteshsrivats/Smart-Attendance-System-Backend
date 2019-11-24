@@ -36,14 +36,16 @@ public class DepartmentController {
     }
 
     @GetMapping(Endpoints.Departments.Courses)
-    public List<Course> getDepartmentCourses(@PathVariable @NotBlank String id) {
-        return departmentService.getDepartmentCourses(id);
+    public List<Course> getDepartmentCourses(
+            @PathVariable @NotBlank String id,
+            @RequestParam(required = false) Byte semester) {
+        return departmentService.getDepartmentCourses(id, semester);
     }
 
     @GetMapping(Endpoints.Departments.Sections)
     public Collection<Section> getDepartmentSections(@PathVariable @NotBlank String id,
-                                                     @RequestParam(required = false) Integer year) {
-        return departmentService.getDepartmentSections(id, year);
+                                                     @RequestParam(required = false) Byte semester) {
+        return departmentService.getDepartmentSections(id, semester);
     }
 
     @GetMapping(Endpoints.Departments.Students)

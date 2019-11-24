@@ -34,8 +34,18 @@ public class CourseService {
         this.departmentRepository = departmentRepository;
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public List<Course> getCourses(Integer year) {
+        if  (year == null ){
+            return courseRepository.findAll();
+        } else {
+            ArrayList<Course> courses = new ArrayList<>();
+            for (Course course: courseRepository.findAll()) {
+                if (course.getYear() == year) {
+                    courses.add(course);
+                }
+            }
+            return courses;
+        }
     }
 
     public Course getCourseById(String id) {
