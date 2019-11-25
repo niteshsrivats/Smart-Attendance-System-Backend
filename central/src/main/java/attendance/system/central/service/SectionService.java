@@ -3,6 +3,7 @@ package attendance.system.central.service;
 import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
+import attendance.system.central.models.constants.Days;
 import attendance.system.central.models.entities.*;
 import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,14 +63,21 @@ public class SectionService {
     }
 
     @Transactional
-    public Map<Course, Teacher> getCourseTeacherMap(String sectionId) {
+    public Map<Course, String> getCourseTeacherMap(String sectionId) {
         Section section = getSectionById(sectionId);
         Hibernate.initialize(section.getCourseTeacherMap());
+        HashMap<Course, String> courseTeacherIdMap = new HashMap<Course, String>();
         for (Course course : section.getCourseTeacherMap().keySet()) {
-            Hibernate.initialize(section.getCourseTeacherMap().get(course).getSections());
-            Hibernate.initialize(section.getCourseTeacherMap().get(course).getCourses());
+             courseTeacherIdMap.put(course, section.getCourseTeacherMap().get(course).getId());
         }
-        return section.getCourseTeacherMap();
+        return courseTeacherIdMap;
+    }
+
+    @Transactional
+    public Map<Days, Schedule> getSectionTimetable(String sectionId) {
+        Section section = getSectionById(sectionId);
+        Hibernate.initialize(section.getDaysScheduleMap());
+        return section.getDaysScheduleMap();
     }
 
     public Section addSection(Section section) {

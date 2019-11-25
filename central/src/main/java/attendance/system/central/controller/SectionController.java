@@ -45,7 +45,7 @@ public class SectionController {
     }
 
     @GetMapping(Endpoints.Sections.Courses)
-    public Map<Course, Teacher> getSectionCourses(@PathVariable @NotBlank String id) {
+    public Map<Course, String> getSectionCourses(@PathVariable @NotBlank String id) {
         return sectionService.getCourseTeacherMap(id);
     }
 
