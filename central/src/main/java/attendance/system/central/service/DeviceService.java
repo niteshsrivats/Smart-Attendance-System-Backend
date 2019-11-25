@@ -42,6 +42,7 @@ public class DeviceService {
         return device;
     }
 
+    @Transactional
     private Device getDeviceById(String id) {
         if (id == null) {
             throw new BadRequestException("Device id cannot be null.");
@@ -49,6 +50,7 @@ public class DeviceService {
         return deviceRepository.findDeviceByEntity_Id(id).orElseThrow(() -> new EntityNotFoundException(Device.class, id));
     }
 
+    @Transactional
     public Device addDevice(Device device) {
         if (authorizationEntityService.entityExists(device.getId())) {
             throw new DuplicateEntityException(Device.class, device.getEntity().getId());
@@ -62,6 +64,7 @@ public class DeviceService {
         return deviceRepository.save(device);
     }
 
+    @Transactional
     public Device updateSection(String id, Section section) {
         Device device = getDeviceById(id);
         Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(

@@ -1,5 +1,7 @@
 package attendance.system.central.controller;
 
+import attendance.system.central.models.entities.Attendance;
+import attendance.system.central.models.entities.Course;
 import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Student;
 import attendance.system.central.models.payload.JwtAuthenticationResponse;
@@ -17,8 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -41,6 +45,11 @@ public class StudentController {
     @GetMapping(Endpoints.Students.Sections)
     public List<Section> getStudentSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return studentService.getStudentSections(userPrincipal.getUsername());
+    }
+
+    @GetMapping(Endpoints.Students.GetCourseAttendance)
+    public Map<Course, Attendance> getStudentAttendance(@PathVariable @NotBlank String id ) {
+        return studentService.getStudentAttendance(id);
     }
 
     @PostMapping(Endpoints.Students.Signup)
@@ -67,5 +76,13 @@ public class StudentController {
     public Student addStudentSection(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                      @RequestBody @Valid @NotNull Section section) {
         return studentService.addSectionToStudent(userPrincipal.getUsername(), section);
+    }
+
+    @PatchMapping(Endpoints.Students.CourseAttendance)
+    public Map<Course, Attendance> addStudentAttendance(
+            @PathVariable @NotBlank String id,
+            @PathVariable @NotBlank String courseId,
+            @RequestBody @Valid @NotNull Attendance attendance) {
+        return studentService.addStudentAttendance(id, courseId, attendance);
     }
 }

@@ -4,10 +4,7 @@ import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
 import attendance.system.central.models.constants.EntityType;
-import attendance.system.central.models.entities.Course;
-import attendance.system.central.models.entities.Department;
-import attendance.system.central.models.entities.Section;
-import attendance.system.central.models.entities.Student;
+import attendance.system.central.models.entities.*;
 import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -65,6 +63,14 @@ public class StudentService {
         return student.getSections();
     }
 
+    @Transactional
+    public Map<Course, Attendance> getStudentAttendance(String id) {
+        Student student = getStudentById(id);
+        Hibernate.initialize(student.getCourseAttendance());
+        return student.getCourseAttendance();
+    }
+
+    @Transactional
     public Student addStudent(Student student) {
         if (authorizationEntityService.entityExists(student.getId())) {
             throw new DuplicateEntityException(Student.class, student.getId());
@@ -85,10 +91,28 @@ public class StudentService {
     }
 
     @Transactional
-    public Student addCourseToStudent(String id, Course course) {
+    public Map<Course, Attendance> addStudentAttendance(String id, String courseId, Attendance attendance) {
         Student student = getStudentById(id);
-        student.getCourses().add(courseRepository.findCourseById(course.getId()).orElseThrow(
-                () -> new EntityNotFoundException(Course.class, course.getId())));
-        return student;
+        Hibernate.initialize(student.getCourseAttendance());
+        Course course = courseRepository.findCourseById(courseId).orElseThrow(
+                () -> new EntityNotFoundException(Course.class, courseId));
+        for (Long time: attendance.getTime()) {
+            student.getCourseAttendance().get(course).getTime().add(time);
+        }
+        return studentRepository.save(student).getCourseAttendance();
+    }
+
+    @Transactional
+    public Map<Course, Attendance> addStudentCourse(String id, Course course) {
+        Student student = getStudentById(id);
+        Hibernate.initialize(student.getCourseAttendance());
+        if (!student.getCourseAttendance().keySet().contains(course)) {
+            student.getCourseAttendance().put(
+                    courseRepository.findCourseById(course.getId()).orElseThrow(
+                            () -> new EntityNotFoundException(Course.class, course.getId())),
+                    new Attendance()
+            );
+        }
+        return studentRepository.save(student).getCourseAttendance();
     }
 }

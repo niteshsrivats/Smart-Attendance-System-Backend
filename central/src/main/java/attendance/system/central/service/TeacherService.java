@@ -55,6 +55,7 @@ public class TeacherService {
         return teacher;
     }
 
+    @Transactional
     private Teacher getTeacherById(String id) {
         if (id == null) {
             throw new BadRequestException("Teacher id cannot be null.");
@@ -96,6 +97,7 @@ public class TeacherService {
         }
     }
 
+    @Transactional
     public Teacher addTeacher(Teacher teacher) {
         if (authorizationEntityService.entityExists(teacher.getId())) {
             throw new DuplicateEntityException(Teacher.class, teacher.getId());
@@ -125,6 +127,7 @@ public class TeacherService {
         return teacherRepository.save(teacher);
     }
 
+    @Transactional
     public void deleteTeacher(String id) {
         Teacher teacher = getTeacherById(id);
         teacher.setValid(false);

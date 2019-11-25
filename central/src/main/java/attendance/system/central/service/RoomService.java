@@ -11,6 +11,7 @@ import attendance.system.central.repositories.postgres.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static attendance.system.central.utils.IdUtils.generateRoomId;
@@ -33,14 +34,17 @@ public class RoomService {
         this.sectionRepository = sectionRepository;
     }
 
+    @Transactional
     public List<Room> getRooms() {
         return roomRepository.findAll();
     }
 
+    @Transactional
     public Room getRoomById(String id) {
         return roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Room.class, id));
     }
 
+    @Transactional
     public Room addRoom(Room room) {
         room.setId(generateRoomId(room));
         try {
@@ -53,6 +57,7 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
+    @Transactional
     public Room updateSection(String id, Section section) {
         Room room = getRoomById(id);
         Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(

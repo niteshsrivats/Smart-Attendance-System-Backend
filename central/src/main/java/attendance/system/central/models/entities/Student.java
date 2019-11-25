@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -38,9 +39,9 @@ public class Student {
     @NotNull
     private Department department;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Course> courses;
+    private Map<Course, Attendance> courseAttendance;
 
     public String getId() {
         return entity.getId();
@@ -98,11 +99,11 @@ public class Student {
         this.department = department;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public Map<Course, Attendance> getCourseAttendance() {
+        return courseAttendance;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setCourseAttendance(Map<Course, Attendance> courseAttendance) {
+        this.courseAttendance = courseAttendance;
     }
 }

@@ -4,12 +4,14 @@ import attendance.system.central.exceptions.BadRequestException;
 import attendance.system.central.exceptions.DuplicateEntityException;
 import attendance.system.central.exceptions.EntityNotFoundException;
 import attendance.system.central.models.constants.Days;
+import attendance.system.central.models.constants.Times;
 import attendance.system.central.models.entities.*;
 import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -42,10 +44,12 @@ public class SectionService {
         this.studentService = studentService;
     }
 
+    @Transactional
     public List<Section> getSections() {
         return this.sectionRepository.findAll();
     }
 
+    @Transactional
     public Section getSectionById(String id) {
         if (id == null) {
             throw new BadRequestException("Section id cannot be null.");
@@ -68,7 +72,7 @@ public class SectionService {
         Hibernate.initialize(section.getCourseTeacherMap());
         HashMap<Course, String> courseTeacherIdMap = new HashMap<Course, String>();
         for (Course course : section.getCourseTeacherMap().keySet()) {
-             courseTeacherIdMap.put(course, section.getCourseTeacherMap().get(course).getId());
+            courseTeacherIdMap.put(course, section.getCourseTeacherMap().get(course).getId());
         }
         return courseTeacherIdMap;
     }
@@ -80,6 +84,7 @@ public class SectionService {
         return section.getDaysScheduleMap();
     }
 
+    @Transactional
     public Section addSection(Section section) {
         try {
             section.setId(generateSectionId(section));
@@ -102,7 +107,31 @@ public class SectionService {
         if (!teacher.getCourses().contains(newCourse)) {
             teacherService.addCourseToTeacher(teacherId, newCourse);
         }
-        // TODO add course for student using student service
+        if (!teacher.getSections().contains(section)) {
+            teacherService.addSectionToTeacher(teacherId, section);
+        }
+        for(Student student: section.getStudents()) {
+            studentService.addStudentCourse(student.getId(), course);
+        }
         return sectionRepository.save(section);
+    }
+
+    @Transactional
+    public Map<Days, Schedule> addTimeTableSchedule(String id, Days day, Schedule schedule) {
+        Section section = getSectionById(id);
+        Hibernate.initialize(section.getDaysScheduleMap());
+        for (Times time : schedule.getClasses().keySet()) {
+            schedule.getClasses().put(
+                    time,
+                    courseRepository.findCourseById(schedule.getClasses().get(time).getId()).orElseThrow(
+                            ()-> new EntityNotFoundException(Course.class, schedule.getClasses().get(time).getId()))
+            );
+        }
+        if (section.getDaysScheduleMap().get(day) == null){
+            section.getDaysScheduleMap().put(day, schedule);
+        } else {
+            section.getDaysScheduleMap().get(day).setClasses(schedule.getClasses());
+        }
+        return sectionRepository.save(section).getDaysScheduleMap();
     }
 }
