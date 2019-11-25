@@ -85,8 +85,13 @@ public class StudentService {
     @Transactional
     public Student addSectionToStudent(String id, Section section) {
         Student student = getStudentById(id);
-        student.getSections().add(sectionRepository.findSectionById(section.getId()).orElseThrow(
-                () -> new EntityNotFoundException(Section.class, section.getId())));
+        Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(
+                () -> new EntityNotFoundException(Section.class, section.getId()));
+        student.getSections().add(newSection);
+        Hibernate.initialize(section.getCourseTeacherMap());
+        for (Course course: section.getCourseTeacherMap().keySet()) {
+            addStudentCourse(id, course);
+        }
         return student;
     }
 
