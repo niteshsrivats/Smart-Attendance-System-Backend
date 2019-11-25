@@ -8,7 +8,6 @@ import attendance.system.central.models.constants.Times;
 import attendance.system.central.models.entities.*;
 import attendance.system.central.repositories.postgres.CourseRepository;
 import attendance.system.central.repositories.postgres.DepartmentRepository;
-import attendance.system.central.repositories.postgres.ScheduleRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +32,14 @@ public class SectionService {
     private final SectionRepository sectionRepository;
     private final DepartmentRepository departmentRepository;
     private final CourseRepository courseRepository;
-    private final ScheduleRepository scheduleRepository;
     private final TeacherService teacherService;
     private final StudentService studentService;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository, DepartmentRepository departmentRepository, CourseRepository courseRepository, ScheduleRepository scheduleRepository, TeacherService teacherService, StudentService studentService) {
+    public SectionService(SectionRepository sectionRepository, DepartmentRepository departmentRepository, CourseRepository courseRepository, TeacherService teacherService, StudentService studentService) {
         this.sectionRepository = sectionRepository;
         this.departmentRepository = departmentRepository;
         this.courseRepository = courseRepository;
-        this.scheduleRepository = scheduleRepository;
         this.teacherService = teacherService;
         this.studentService = studentService;
     }
@@ -113,7 +110,9 @@ public class SectionService {
         if (!teacher.getSections().contains(section)) {
             teacherService.addSectionToTeacher(teacherId, section);
         }
-        // TODO add course for student using student service
+        for(Student student: section.getStudents()) {
+            studentService.addStudentCourse(student.getId(), course);
+        }
         return sectionRepository.save(section);
     }
 

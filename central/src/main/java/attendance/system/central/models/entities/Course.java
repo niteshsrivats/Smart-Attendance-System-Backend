@@ -45,14 +45,7 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" +
-                "rowId=" + rowId +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", year=" + year +
-                ", semester=" + semester +
-                ", valid=" + valid +
-                '}';
+        return id;
     }
 
     public Long getRowId() {

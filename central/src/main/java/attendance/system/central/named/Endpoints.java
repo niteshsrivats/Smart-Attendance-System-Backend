@@ -24,6 +24,8 @@ public class Endpoints {
         public final static String Signin = Base + "/login";
 
         public final static String Sections = GetById + "/sections";
+        public final static String GetCourseAttendance = GetById + "/courses/attendance";
+        public final static String CourseAttendance = GetById + "/courses/{courseId}";
     }
 
     public static class Teachers {
