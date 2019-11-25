@@ -65,6 +65,7 @@ public class StudentService {
         return student.getSections();
     }
 
+    @Transactional
     public Student addStudent(Student student) {
         if (authorizationEntityService.entityExists(student.getId())) {
             throw new DuplicateEntityException(Student.class, student.getId());

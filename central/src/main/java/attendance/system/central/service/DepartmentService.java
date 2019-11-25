@@ -108,6 +108,7 @@ public class DepartmentService {
         return department.getRooms();
     }
 
+    @Transactional
     public Department addDepartment(Department department) {
         try {
             getDepartmentById(department.getId());

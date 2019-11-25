@@ -34,6 +34,7 @@ public class CourseService {
         this.departmentRepository = departmentRepository;
     }
 
+    @Transactional
     public List<Course> getCourses(Integer year) {
         if  (year == null ){
             return courseRepository.findAll();
@@ -48,6 +49,7 @@ public class CourseService {
         }
     }
 
+    @Transactional
     public Course getCourseById(String id) {
         if (id == null) {
             throw new BadRequestException("Course id cannot be null.");
@@ -70,6 +72,7 @@ public class CourseService {
         return teachers;
     }
 
+    @Transactional
     public Course addCourse(Course course) {
         if (course.getDepartment() == null) {
             throw new BadRequestException("Department cannot be null");
@@ -86,6 +89,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    @Transactional
     public void deleteCourse(String id) {
         Course course = getCourseById(id);
         course.setValid(false);

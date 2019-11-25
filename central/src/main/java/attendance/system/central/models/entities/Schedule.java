@@ -2,7 +2,6 @@ package attendance.system.central.models.entities;
 
 import attendance.system.central.models.constants.Times;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -11,14 +10,14 @@ import java.util.Map;
  * @author Nitesh (niteshsrivats.k@gmail.com)
  */
 
-@Entity(name="schedules")
+@Entity(name = "schedules")
 public class Schedule {
     @Id
     @GeneratedValue
     @JsonIgnore
     private Long rowId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Times, Course> classes;
 
     public Long getRowId() {
@@ -35,5 +34,13 @@ public class Schedule {
 
     public void setClasses(Map<Times, Course> classes) {
         this.classes = classes;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "rowId=" + rowId +
+                ", classes=" + classes +
+                '}';
     }
 }

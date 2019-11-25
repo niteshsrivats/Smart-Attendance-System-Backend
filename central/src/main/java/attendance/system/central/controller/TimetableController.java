@@ -5,11 +5,11 @@ import attendance.system.central.models.entities.Schedule;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -30,11 +30,11 @@ public class TimetableController {
         return sectionService.getSectionTimetable(id);
     }
 
-//    @PatchMapping(Endpoints.Sections.CourseTeacherPair)
-//    public Section addSection(
-//            @PathVariable @NotBlank String id,
-//            @PathVariable @NotBlank String teacherId,
-//            @RequestBody @Valid @NotNull Course course) {
-//        return sectionService.addCourseTeacherPair(id, teacherId, course);
-//    }
+    @PatchMapping(Endpoints.Sections.TimetableSchedule)
+    public Map<Days, Schedule> addTimeTableSchedule(
+            @PathVariable @NotBlank String id,
+            @PathVariable @NotBlank Days day,
+            @RequestBody @Valid @NotNull Schedule schedule) {
+        return sectionService.addTimeTableSchedule(id, day, schedule);
+    }
 }

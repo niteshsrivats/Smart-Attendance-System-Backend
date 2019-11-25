@@ -3,7 +3,6 @@ package attendance.system.central.controller;
 import attendance.system.central.models.entities.Course;
 import attendance.system.central.models.entities.Section;
 import attendance.system.central.models.entities.Student;
-import attendance.system.central.models.entities.Teacher;
 import attendance.system.central.named.Endpoints;
 import attendance.system.central.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;

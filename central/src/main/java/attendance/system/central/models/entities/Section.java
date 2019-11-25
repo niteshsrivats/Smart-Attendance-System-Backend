@@ -48,7 +48,8 @@ public class Section {
     @JsonIgnore
     private Set<Student> students;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Map<Days, Schedule> daysScheduleMap;
 
     public Long getRowId() {
