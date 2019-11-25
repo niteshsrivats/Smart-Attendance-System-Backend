@@ -25,41 +25,43 @@ class Detector:
         sess = json.loads(response.text)['accessToken']
         return {'Authorization': sess}
 
-    # def get_courses(self):
-    #     urlGetCourses = 'http://localhost:8080/v1/courses'
-    #     response = requests.get(urlGetCourses, headers=self.auth_header)
-    #     for i in json.loads(response.text):
-    #         course = Course.Courses(**json.loads(json.dumps(i)))
-        # get_teachers(course.id)
+    def get_teachers(self, courseId):
+        urlTeacherCoursePair = 'http://localhost:8080/v1/courses/{}/teachers'.format(
+            courseId)
+        response = requests.get(urlTeacherCoursePair, headers=self.auth_header)
+        for i in json.loads(response.text):
+            teacher = Teacher(i['name'], i['sections'], i['courses'],
+                                      list(i['department']), i['id'], i['type'])
 
-    # def get_sections(self):
-    #     urlGetSection = 'http://localhost:8080/v1/sections/'
-    #     response = requests.get(urlGetSection, headers=self.auth_header)
-    #     for i in json.loads(response.text):
-    #         section = Section.Section(**json.loads(json.dumps(i)))
-    #         get_section_courses(section.id)
+    def get_courses(self):
+        urlGetCourses = 'http://localhost:8080/v1/courses'
+        response = requests.get(urlGetCourses, headers=self.auth_header)
+        for i in json.loads(response.text):
+            course = Course(**json.loads(json.dumps(i)))
+            self.get_teachers(course.id)
 
-    # def get_teachers(self, courseId):
-    #     urlTeacherCoursePair = 'http://localhost:8080/v1/courses/{}/teachers'.format(
-    #         courseId)
-    #     response = requests.get(urlTeacherCoursePair, headers=self.auth_header)
-    #     for i in json.loads(response.text):
-    #         teacher = Teacher.Teacher(i['name'], i['sections'], i['courses'],
-    #                                   list(i['department']), i['id'], i['type'])
+    def get_sections(self):
+        urlGetSection = 'http://localhost:8080/v1/sections/'
+        response = requests.get(urlGetSection, headers=self.auth_header)
+        for i in json.loads(response.text):
+            section = Section(**json.loads(json.dumps(i)))
+            self.get_section_courses(section.id)
 
-    # def get_section_courses(self, sectionId):
-    #     urlSectionCourses = 'http://localhost:8080/v1/sections/{}/courses'.format(
-    #         sectionId)
-    #     response = requests.get(urlSectionCourses, headers=self.auth_header)
-    #     print(json.loads(response.text))
-    #     for i in json.loads(response.text):
-    #         print(i)
+    
+
+    def get_section_courses(self, sectionId):
+        urlSectionCourses = 'http://localhost:8080/v1/sections/{}/courses'.format(
+            sectionId)
+        response = requests.get(urlSectionCourses, headers=self.auth_header)
+        print(json.loads(response.text))
+        for i in json.loads(response.text):
+            print(i)
 
 
 detector = Detector()
 print(detector.auth_header)
-# detector.get_courses()
-# detector.get_sections()
+detector.get_courses()
+detector.get_sections()
 
 
 # This should be the central controller
