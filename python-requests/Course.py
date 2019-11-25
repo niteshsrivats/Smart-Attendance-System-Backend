@@ -4,7 +4,7 @@ class Courses:
     year = None
     semester = None
 
-    def __init__(self, id, name, year, semester):
+    def __init__(self, id: str, name: str, year:int, semester:int):
         self.id = id
         self.name = name
         self.year = year
