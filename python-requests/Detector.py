@@ -46,8 +46,16 @@ class Detector:
         for i in json.loads(response.text):
             section = Section(**json.loads(json.dumps(i)))
             self.get_section_courses(section.id)
-
+            self.get_section_schedule(section.id)
     
+
+    def get_section_schedule(self,sectionId):
+        urlGetSectionSchedule = 'http://localhost:8080/v1/sections/{}/timetable/'.format(sectionId)
+        response = requests.get(urlGetSectionSchedule, headers=self.auth_header)
+        print(json.loads(response.text))
+        for k in json.loads(response.text).keys():
+            for j in json.loads(response.text)[k]['classes'].keys():
+                print(j + '->' + str(json.loads(response.text)[k]['classes'][j]))
 
     def get_section_courses(self, sectionId):
         urlSectionCourses = 'http://localhost:8080/v1/sections/{}/courses'.format(
