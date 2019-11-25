@@ -1,5 +1,6 @@
 package attendance.system.central.models.entities;
 
+import attendance.system.central.models.constants.Days;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,6 +47,9 @@ public class Section {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "sections")
     @JsonIgnore
     private Set<Student> students;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Map<Days, Schedule> daysScheduleMap;
 
     public Long getRowId() {
         return rowId;
@@ -118,4 +122,13 @@ public class Section {
     public void setRoom(Integer room) {
         this.room = room;
     }
+
+    public Map<Days, Schedule> getDaysScheduleMap() {
+        return daysScheduleMap;
+    }
+
+    public void setDaysScheduleMap(Map<Days, Schedule> daysScheduleMap) {
+        this.daysScheduleMap = daysScheduleMap;
+    }
+
 }

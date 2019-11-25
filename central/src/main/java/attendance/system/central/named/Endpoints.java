@@ -50,6 +50,7 @@ public class Endpoints {
         public final static String Students = GetById + "/students";
         public final static String Courses = GetById + "/courses";
         public final static String CourseTeacherPair = GetById + "/teachers/{teacherId}";
+        public final static String Timetable = GetById + "/timetable";
     }
 
     public static class Departments {
