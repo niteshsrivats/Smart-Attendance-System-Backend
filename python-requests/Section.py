@@ -6,9 +6,6 @@ class Section:
         self.semester = semester
         self.room = room
         self.daysScheduleMap = daysScheduleMap
+
     def __str__(self):
         return "Section{}id={}, section={}, semester={}, year={}, room={}{}".format("{", self.id, self.section, self.semester, self.year, self.room, "}")
-
-
-a = Section("1", "A", 1, 1)
-print(a)
