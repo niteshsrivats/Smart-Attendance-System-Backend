@@ -5,7 +5,8 @@ from Department import Department
 import requests
 import json
 from typing import List
-
+from datetime import datetime
+import calendar
 
 class Detector:
 
@@ -45,9 +46,8 @@ class Detector:
         response = requests.get(urlGetSection, headers=self.auth_header)
         for i in json.loads(response.text):
             section = Section(**json.loads(json.dumps(i)))
-            self.get_section_courses(section.id)
             self.get_section_schedule(section.id)
-    
+            self.get_section_students(section.id)
 
     def get_section_schedule(self,sectionId):
         urlGetSectionSchedule = 'http://localhost:8080/v1/sections/{}/timetable/'.format(sectionId)
@@ -57,14 +57,30 @@ class Detector:
             for j in json.loads(response.text)[k]['classes'].keys():
                 print(j + '->' + str(json.loads(response.text)[k]['classes'][j]))
 
-    def get_section_courses(self, sectionId):
+    def get_section_students(self, sectionId):
+        urlGetSectionStudents = 'http://localhost:8080/v1/sections/{}/students'.format(sectionId)
+        response = requests.get(urlGetSectionStudents, headers = self.auth_header)
+        for i in json.loads(response.text):
+            self.get_section_courses(sectionId, i['id'])
+
+    def get_section_courses(self, sectionId, studentId):
         urlSectionCourses = 'http://localhost:8080/v1/sections/{}/courses'.format(
             sectionId)
         response = requests.get(urlSectionCourses, headers=self.auth_header)
         print(json.loads(response.text))
         for i in json.loads(response.text):
-            print(i)
-
+            self.set_attendance(studentId, i)
+    
+    def set_attendance(self, studentId, courseId):
+        urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}'.format(studentId, courseId)
+        d = datetime.utcnow()
+        unixtime = calendar.timegm(d.utctimetuple())
+        self.auth_header['Content-Type'] = 'application/json'
+        payload = {
+            "time": [unixtime]
+        }
+        response = requests.patch(urlSetAttendance, data= payload, headers= self.auth_header)
+        print(json.loads(response.text))
 
 detector = Detector()
 print(detector.auth_header)
