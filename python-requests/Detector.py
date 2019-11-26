@@ -33,6 +33,7 @@ class Detector:
         for i in json.loads(response.text):
             teacher = Teacher(i['name'], i['sections'], i['courses'],
                                       list(i['department']), i['id'], i['type'])
+            return i['id']
 
     def get_courses(self):
         urlGetCourses = 'http://localhost:8080/v1/courses'
