@@ -75,18 +75,13 @@ public class DepartmentService {
     }
 
     @Transactional
-    public Collection<Student> getDepartmentStudents(String id, Integer year) {
+    public List<Student> getDepartmentStudents(String id, Integer year) {
         Department department = getDepartmentById(id);
         Hibernate.initialize(department.getStudents());
-        if (year == null) {
-            return department.getStudents();
-        }
-
-
         List<Student> students = new ArrayList<>();
         for (Student student : department.getStudents()) {
             Hibernate.initialize(student.getSections());
-            if (student.getGraduationYear() >= year && student.getGraduationYear() <= year + 4) {
+            if (year == null || student.getGraduationYear().equals(year + 4)) {
                 students.add(student);
             }
         }

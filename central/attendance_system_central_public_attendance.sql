@@ -560,6 +560,6 @@ insert into public.sections_course_teacher_map (sections_row_id, course_teacher_
 insert into public.sections_course_teacher_map (sections_row_id, course_teacher_map_row_id, course_teacher_map_key) VALUES (77, 39, 62);
 insert into public.sections_course_teacher_map (sections_row_id, course_teacher_map_row_id, course_teacher_map_key) VALUES (77, 40, 63);
 
-insert into public.devices (row_id, name, entity_id, section_row_id) VALUES (480, 'Nitesh', 'device-cse-1', 69);
+insert into public.devices (row_id, name, entity_id, section_row_id) VALUES (480, 'Rasberry Pi', 'device-cse-1', 69);
 
 insert into public.rooms (row_id, id, department_row_id, section_row_id, room) VALUES (482, 'cse-402', 1, 69, 402);

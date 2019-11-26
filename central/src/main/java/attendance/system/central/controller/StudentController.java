@@ -42,6 +42,11 @@ public class StudentController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @GetMapping(Endpoints.Students.GetById)
+    public Student getStudent(@PathVariable @NotBlank String id) {
+        return studentService.getStudent(id);
+    }
+
     @GetMapping(Endpoints.Students.Sections)
     public Set<Section> getStudentSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return studentService.getStudentSections(userPrincipal.getUsername());
