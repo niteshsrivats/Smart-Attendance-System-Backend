@@ -62,7 +62,7 @@ public class RoomService {
         Room room = getRoomById(id);
         Section newSection = sectionRepository.findSectionById(section.getId()).orElseThrow(
                 () -> new EntityNotFoundException(Section.class, section.getId()));
-        newSection.setRoom(room.getNumber());
+        newSection.setRoom(room.getRoom());
         room.setSection(sectionRepository.save(newSection));
         return roomRepository.save(room);
     }

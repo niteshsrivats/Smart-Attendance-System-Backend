@@ -17,10 +17,11 @@ public class Room {
     private Long rowId;
 
     @Column(nullable = false, unique = true, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @Column(nullable = false)
-    private Integer number;
+    private Integer room;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -46,12 +47,12 @@ public class Room {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getRoom() {
+        return room;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setRoom(Integer room) {
+        this.room = room;
     }
 
     public Department getDepartment() {

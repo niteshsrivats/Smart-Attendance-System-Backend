@@ -70,8 +70,8 @@ public class TeacherService {
         if (semester == null) {
             return teacher.getSections();
         } else {
-            ArrayList<Section> sections =  new ArrayList<>();
-            for (Section section: teacher.getSections()) {
+            ArrayList<Section> sections = new ArrayList<>();
+            for (Section section : teacher.getSections()) {
                 if (section.getSemester().equals(semester)) {
                     sections.add(section);
                 }
@@ -87,8 +87,8 @@ public class TeacherService {
         if (semester == null) {
             return teacher.getCourses();
         } else {
-            HashSet<Course> courses =  new HashSet<>();
-            for (Course course: teacher.getCourses()) {
+            HashSet<Course> courses = new HashSet<>();
+            for (Course course : teacher.getCourses()) {
                 if (course.getSemester().equals(semester)) {
                     courses.add(course);
                 }

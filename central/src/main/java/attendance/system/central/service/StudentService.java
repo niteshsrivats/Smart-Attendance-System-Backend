@@ -15,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -42,23 +42,23 @@ public class StudentService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Transactional
-//    public void temp(){
-//        for (Student student: studentRepository.findAll()) {
-//            List<Section> sections = getStudentSections(student.getId());
-//            for (Section section: sections) {
-//                Hibernate.initialize(section.getCourseTeacherMap());
-//                if (section.getCourseTeacherMap() != null) {
-//                    for (Course course: section.getCourseTeacherMap().keySet()) {
-//                        Hibernate.initialize(student.getCourseAttendance());
-//                        if (!student.getCourseAttendance().keySet().contains(course)) {
-//                            student.getCourseAttendance().put(course, new Attendance());
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @Transactional
+    public void temp() {
+        for (Student student : studentRepository.findAll()) {
+            Set<Section> sections = getStudentSections(student.getId());
+            for (Section section : sections) {
+                Hibernate.initialize(section.getCourseTeacherMap());
+                if (section.getCourseTeacherMap() != null) {
+                    for (Course course : section.getCourseTeacherMap().keySet()) {
+                        Hibernate.initialize(student.getCourseAttendance());
+                        if (!student.getCourseAttendance().keySet().contains(course)) {
+                            student.getCourseAttendance().put(course, new Attendance());
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Transactional
     public Student getStudent(String id) {
@@ -75,7 +75,7 @@ public class StudentService {
     }
 
     @Transactional
-    public List<Section> getStudentSections(String id) {
+    public Set<Section> getStudentSections(String id) {
         Student student = getStudentById(id);
         Hibernate.initialize(student.getSections());
         return student.getSections();
@@ -108,7 +108,7 @@ public class StudentService {
         student.getSections().add(newSection);
         Hibernate.initialize(section.getCourseTeacherMap());
         if (section.getCourseTeacherMap() != null) {
-            for (Course course: section.getCourseTeacherMap().keySet()) {
+            for (Course course : section.getCourseTeacherMap().keySet()) {
                 addStudentCourse(id, course);
             }
         }

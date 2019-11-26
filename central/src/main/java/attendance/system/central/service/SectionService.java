@@ -11,7 +11,6 @@ import attendance.system.central.repositories.postgres.DepartmentRepository;
 import attendance.system.central.repositories.postgres.SectionRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -110,7 +109,7 @@ public class SectionService {
         if (!teacher.getSections().contains(section)) {
             teacherService.addSectionToTeacher(teacherId, section);
         }
-        for(Student student: section.getStudents()) {
+        for (Student student : section.getStudents()) {
             studentService.addStudentCourse(student.getId(), course);
         }
         return sectionRepository.save(section);
@@ -124,10 +123,10 @@ public class SectionService {
             schedule.getClasses().put(
                     time,
                     courseRepository.findCourseById(schedule.getClasses().get(time).getId()).orElseThrow(
-                            ()-> new EntityNotFoundException(Course.class, schedule.getClasses().get(time).getId()))
+                            () -> new EntityNotFoundException(Course.class, schedule.getClasses().get(time).getId()))
             );
         }
-        if (section.getDaysScheduleMap().get(day) == null){
+        if (section.getDaysScheduleMap().get(day) == null) {
             section.getDaysScheduleMap().put(day, schedule);
         } else {
             section.getDaysScheduleMap().get(day).setClasses(schedule.getClasses());

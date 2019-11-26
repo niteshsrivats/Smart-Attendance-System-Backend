@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -33,7 +33,7 @@ public class Student {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<Section> sections;
+    private Set<Section> sections;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @NotNull
@@ -83,11 +83,11 @@ public class Student {
         this.graduationYear = graduationYear;
     }
 
-    public List<Section> getSections() {
+    public Set<Section> getSections() {
         return sections;
     }
 
-    public void setSections(List<Section> sections) {
+    public void setSections(Set<Section> sections) {
         this.sections = sections;
     }
 

@@ -9,11 +9,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Times {
     FIRST("08:00 - 08:55"),
     SECOND("08:55 - 09:50"),
-    THIRD("11:15 - 12:10"),
-    FOURTH("12:10 - 01:05"),
-    FIFTH("02:00 - 02:55"),
-    SIXTH("02:55 - 03:50"),
-    SEVENTH("03:50 - 04:45");
+    THIRD("09:50 - 10:45"),
+    FOURTH("11:15 - 12:10"),
+    FIFTH("12:10 - 01:05"),
+    SIXTH("02:00 - 02:55"),
+    SEVENTH("02:55 - 03:50"),
+    EIGHTH("03:50 - 04:45");
 
     private final String time;
 
@@ -26,3 +27,10 @@ public enum Times {
         return time;
     }
 }
+
+//"17CSE5ADA": "teacher-cse-id-2",
+//"16CSE5SE": "teacher-cse-id-3",
+//"19CSE5IOT": "teacher-cse-id-5",
+//"15CSE5DS": "teacher-cse-id-1",
+//"18CSE5PWP": "teacher-cse-id-4"
+
