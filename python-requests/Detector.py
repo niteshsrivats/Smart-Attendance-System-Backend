@@ -15,7 +15,7 @@ class Detector:
 
     def get_token(self):
         payload = {
-            "username": "deviceId",
+            "username": "device-cse-1",
             "password": "password"
         }
 
@@ -48,21 +48,28 @@ class Detector:
         for i in json.loads(response.text):
             section = Section(**json.loads(json.dumps(i)))
             self.get_section_schedule(section.id)
-            self.get_section_students(section.id)
+            #self.get_section_students(section.id)
+            
 
     def get_section_schedule(self,sectionId):
         urlGetSectionSchedule = 'http://localhost:8080/v1/sections/{}/timetable/'.format(sectionId)
         response = requests.get(urlGetSectionSchedule, headers=self.auth_header)
-        print(json.loads(response.text))
+        time_list = []
+        #print(json.loads(response.text))
         for k in json.loads(response.text).keys():
             for j in json.loads(response.text)[k]['classes'].keys():
-                print(j + '->' + str(json.loads(response.text)[k]['classes'][j]))
+                time_list.append(j + '->' + str(json.loads(response.text)[k]['classes'][j]['id']))
+        return time_list
 
     def get_section_students(self, sectionId):
         urlGetSectionStudents = 'http://localhost:8080/v1/sections/{}/students'.format(sectionId)
         response = requests.get(urlGetSectionStudents, headers = self.auth_header)
+        student_list = []
         for i in json.loads(response.text):
-            self.get_section_courses(sectionId, i['id'])
+            student_list.append(i['id'])
+            #self.get_section_courses(sectionId, i['id'])
+        #print(student_list)
+        return student_list
 
     def get_section_courses(self, sectionId, studentId):
         urlSectionCourses = 'http://localhost:8080/v1/sections/{}/courses'.format(
@@ -72,19 +79,18 @@ class Detector:
         for i in json.loads(response.text):
             self.set_attendance(studentId, i)
     
-    def set_attendance(self, studentId, courseId):
-        urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}/present'.format(studentId, courseId)
-        d = datetime.utcnow()
-        unixtime = calendar.timegm(d.utctimetuple())
-        print(unixtime)
+    def set_attendance(self, studentId, courseId, status = None):
+        if status != None:
+            urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}/{}'.format(studentId, courseId, status)
         #self.auth_header['Content-Type'] = 'application/json'
-        response = requests.patch(urlSetAttendance, headers= self.auth_header)
-        print(json.loads(response.text))
+            response = requests.patch(urlSetAttendance, headers= self.auth_header)
+            #print(json.loads(response.text))
 
-detector = Detector()
-print(detector.auth_header)
-detector.get_courses()
-detector.get_sections()
+#detector = Detector()
+#detector.get_sections()
+# print(detector.auth_header)
+# detector.get_courses()
+#detector.get_sections()
 
 
 # This should be the central controller
