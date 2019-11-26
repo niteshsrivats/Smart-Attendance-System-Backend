@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -40,9 +38,13 @@ public class DepartmentService {
     }
 
     @Transactional
-    public List<Course> getDepartmentCourses(String id, Byte semester) {
+    public Collection<Course> getDepartmentCourses(String id, Byte semester) {
         Department department = getDepartmentById(id);
         Hibernate.initialize(department.getCourses());
+        if (semester == null) {
+            return department.getCourses();
+        }
+
         List<Course> courses = new ArrayList<>();
         for (Course course : department.getCourses()) {
             if (course.getValid() && course.getSemester().equals(semester)) {
@@ -53,7 +55,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public List<Section> getDepartmentSections(String id, Byte semester) {
+    public Collection<Section> getDepartmentSections(String id, Byte semester) {
         Department department = getDepartmentById(id);
         Hibernate.initialize(department.getSections());
         if (semester == null) {
@@ -70,16 +72,18 @@ public class DepartmentService {
     }
 
     @Transactional
-    public List<Student> getDepartmentStudents(String id, Integer year) {
+    public Collection<Student> getDepartmentStudents(String id, Integer year) {
         Department department = getDepartmentById(id);
         Hibernate.initialize(department.getStudents());
+        if (year == null) {
+            return department.getStudents();
+        }
+
 
         List<Student> students = new ArrayList<>();
         for (Student student : department.getStudents()) {
             Hibernate.initialize(student.getSections());
-            if (year == null) {
-                students.add(student);
-            } else if (student.getGraduationYear() >= year && student.getGraduationYear() <= year + 4) {
+            if (student.getGraduationYear() >= year && student.getGraduationYear() <= year + 4) {
                 students.add(student);
             }
         }
@@ -102,7 +106,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public List<Room> getDepartmentRooms(String id) {
+    public Set<Room> getDepartmentRooms(String id) {
         Department department = getDepartmentById(id);
         Hibernate.initialize(department.getRooms());
         return department.getRooms();

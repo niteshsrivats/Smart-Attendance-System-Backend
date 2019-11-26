@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -43,7 +44,7 @@ public class StudentController {
     }
 
     @GetMapping(Endpoints.Students.Sections)
-    public List<Section> getStudentSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public Set<Section> getStudentSections(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return studentService.getStudentSections(userPrincipal.getUsername());
     }
 

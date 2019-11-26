@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -24,23 +25,23 @@ public class Department {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnore
-    private List<Section> sections;
+    private Set<Section> sections;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnore
-    private List<Course> courses;
+    private Set<Course> courses;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnore
-    private List<Student> students;
+    private Set<Student> students;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnore
-    private List<Teacher> teachers;
+    private Set<Teacher> teachers;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnore
-    private List<Room> rooms;
+    private Set<Room> rooms;
 
     public Long getRowId() {
         return rowId;
@@ -66,43 +67,43 @@ public class Department {
         this.name = name;
     }
 
-    public List<Section> getSections() {
+    public Set<Section> getSections() {
         return sections;
     }
 
-    public void setSections(List<Section> sections) {
+    public void setSections(Set<Section> sections) {
         this.sections = sections;
     }
 
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(Set<Student> students) {
         this.students = students;
     }
 
-    public List<Teacher> getTeachers() {
+    public Set<Teacher> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
+    public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
     }
 
-    public List<Room> getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<Room> rooms) {
+    public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
 }

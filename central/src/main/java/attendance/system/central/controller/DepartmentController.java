@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -36,7 +37,7 @@ public class DepartmentController {
     }
 
     @GetMapping(Endpoints.Departments.Courses)
-    public List<Course> getDepartmentCourses(
+    public Collection<Course> getDepartmentCourses(
             @PathVariable @NotBlank String id,
             @RequestParam(required = false) Byte semester) {
         return departmentService.getDepartmentCourses(id, semester);
@@ -49,7 +50,7 @@ public class DepartmentController {
     }
 
     @GetMapping(Endpoints.Departments.Students)
-    public List<Student> getDepartmentStudents(@PathVariable @NotBlank String id,
+    public Collection<Student> getDepartmentStudents(@PathVariable @NotBlank String id,
                                                @RequestParam(required = false) Integer year) {
         return departmentService.getDepartmentStudents(id, year);
     }
@@ -60,7 +61,7 @@ public class DepartmentController {
     }
 
     @GetMapping(Endpoints.Departments.Rooms)
-    public List<Room> getDepartmentRooms(@PathVariable @NotBlank String id) {
+    public Set<Room> getDepartmentRooms(@PathVariable @NotBlank String id) {
         return departmentService.getDepartmentRooms(id);
     }
 
