@@ -36,11 +36,11 @@ public class CourseService {
 
     @Transactional
     public List<Course> getCourses(Integer year) {
-        if  (year == null ){
+        if (year == null) {
             return courseRepository.findAll();
         } else {
             ArrayList<Course> courses = new ArrayList<>();
-            for (Course course: courseRepository.findAll()) {
+            for (Course course : courseRepository.findAll()) {
                 if (course.getYear() == year) {
                     courses.add(course);
                 }

@@ -3,9 +3,7 @@ package attendance.system.central.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +18,7 @@ public class Attendance {
     private Long id;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private  Map<Long, Boolean> attendance;
+    private Map<Long, Boolean> attendance;
 
     public Attendance() {
         this.attendance = new HashMap<>();

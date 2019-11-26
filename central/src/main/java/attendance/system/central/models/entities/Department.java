@@ -3,7 +3,6 @@ package attendance.system.central.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /**

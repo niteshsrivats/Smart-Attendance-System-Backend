@@ -51,7 +51,7 @@ public class DepartmentController {
 
     @GetMapping(Endpoints.Departments.Students)
     public Collection<Student> getDepartmentStudents(@PathVariable @NotBlank String id,
-                                               @RequestParam(required = false) Integer year) {
+                                                     @RequestParam(required = false) Integer year) {
         return departmentService.getDepartmentStudents(id, year);
     }
 
@@ -60,7 +60,7 @@ public class DepartmentController {
         return departmentService.getDepartmentTeachers(id);
     }
 
-    @GetMapping(Endpoints.Departments.Rooms)
+    @GetMapping(Endpoints.Departments.GetRoomsByDeparmentId)
     public Set<Room> getDepartmentRooms(@PathVariable @NotBlank String id) {
         return departmentService.getDepartmentRooms(id);
     }

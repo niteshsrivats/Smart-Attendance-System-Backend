@@ -32,6 +32,6 @@ public class IdUtils {
     }
 
     public static String generateRoomId(Room room) {
-        return room.getDepartment().getId() + "-" + room.getNumber();
+        return room.getDepartment().getId() + "-" + room.getRoom();
     }
 }

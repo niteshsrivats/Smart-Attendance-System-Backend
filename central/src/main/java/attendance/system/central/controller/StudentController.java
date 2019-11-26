@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,7 +48,7 @@ public class StudentController {
     }
 
     @GetMapping(Endpoints.Students.GetCourseAttendance)
-    public Map<Course, Attendance> getStudentAttendance(@PathVariable @NotBlank String id ) {
+    public Map<Course, Attendance> getStudentAttendance(@PathVariable @NotBlank String id) {
         return studentService.getStudentAttendance(id);
     }
 
