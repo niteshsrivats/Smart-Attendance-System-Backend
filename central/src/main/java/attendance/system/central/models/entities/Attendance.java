@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
@@ -18,17 +20,17 @@ public class Attendance {
     private Long id;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> time;
+    private  Map<Long, Boolean> attendance;
 
     public Attendance() {
-        this.time = new ArrayList<>();
+        this.attendance = new HashMap<>();
     }
 
-    public List<Long> getTime() {
-        return time;
+    public Map<Long, Boolean> getAttendance() {
+        return attendance;
     }
 
-    public void setTime(List<Long> time) {
-        this.time = time;
+    public void setAttendance(Map<Long, Boolean> attendance) {
+        this.attendance = attendance;
     }
 }

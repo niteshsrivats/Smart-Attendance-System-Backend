@@ -42,6 +42,24 @@ public class StudentService {
         this.passwordEncoder = passwordEncoder;
     }
 
+//    @Transactional
+//    public void temp(){
+//        for (Student student: studentRepository.findAll()) {
+//            List<Section> sections = getStudentSections(student.getId());
+//            for (Section section: sections) {
+//                Hibernate.initialize(section.getCourseTeacherMap());
+//                if (section.getCourseTeacherMap() != null) {
+//                    for (Course course: section.getCourseTeacherMap().keySet()) {
+//                        Hibernate.initialize(student.getCourseAttendance());
+//                        if (!student.getCourseAttendance().keySet().contains(course)) {
+//                            student.getCourseAttendance().put(course, new Attendance());
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     @Transactional
     public Student getStudent(String id) {
         Student student = getStudentById(id);
@@ -89,21 +107,21 @@ public class StudentService {
                 () -> new EntityNotFoundException(Section.class, section.getId()));
         student.getSections().add(newSection);
         Hibernate.initialize(section.getCourseTeacherMap());
-        for (Course course: section.getCourseTeacherMap().keySet()) {
-            addStudentCourse(id, course);
+        if (section.getCourseTeacherMap() != null) {
+            for (Course course: section.getCourseTeacherMap().keySet()) {
+                addStudentCourse(id, course);
+            }
         }
         return student;
     }
 
     @Transactional
-    public Map<Course, Attendance> addStudentAttendance(String id, String courseId, Attendance attendance) {
+    public Map<Course, Attendance> addStudentAttendance(String id, String courseId, Boolean present) {
         Student student = getStudentById(id);
         Hibernate.initialize(student.getCourseAttendance());
         Course course = courseRepository.findCourseById(courseId).orElseThrow(
                 () -> new EntityNotFoundException(Course.class, courseId));
-        for (Long time: attendance.getTime()) {
-            student.getCourseAttendance().get(course).getTime().add(time);
-        }
+        student.getCourseAttendance().get(course).getAttendance().put(System.currentTimeMillis(), present);
         return studentRepository.save(student).getCourseAttendance();
     }
 

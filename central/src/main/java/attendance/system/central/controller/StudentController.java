@@ -73,16 +73,22 @@ public class StudentController {
     }
 
     @PatchMapping(Endpoints.Students.Sections)
-    public Student addStudentSection(@AuthenticationPrincipal UserPrincipal userPrincipal,
+    public Student addStudentSection(@PathVariable String id,
                                      @RequestBody @Valid @NotNull Section section) {
-        return studentService.addSectionToStudent(userPrincipal.getUsername(), section);
+        return studentService.addSectionToStudent(id, section);
     }
 
-    @PatchMapping(Endpoints.Students.CourseAttendance)
-    public Map<Course, Attendance> addStudentAttendance(
+    @PatchMapping(Endpoints.Students.CourseAttendancePresent)
+    public Map<Course, Attendance> addStudentAttendancePresent(
             @PathVariable @NotBlank String id,
-            @PathVariable @NotBlank String courseId,
-            @RequestBody @Valid @NotNull Attendance attendance) {
-        return studentService.addStudentAttendance(id, courseId, attendance);
+            @PathVariable @NotBlank String courseId) {
+        return studentService.addStudentAttendance(id, courseId, true);
+    }
+
+    @PatchMapping(Endpoints.Students.CourseAttendanceAbsent)
+    public Map<Course, Attendance> addStudentAttendanceAbsent(
+            @PathVariable @NotBlank String id,
+            @PathVariable @NotBlank String courseId) {
+        return studentService.addStudentAttendance(id, courseId, false);
     }
 }

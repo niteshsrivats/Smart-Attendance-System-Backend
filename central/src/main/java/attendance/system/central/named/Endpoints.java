@@ -25,7 +25,8 @@ public class Endpoints {
 
         public final static String Sections = GetById + "/sections";
         public final static String GetCourseAttendance = GetById + "/courses/attendance";
-        public final static String CourseAttendance = GetById + "/courses/{courseId}";
+        public final static String CourseAttendancePresent = GetById + "/courses/{courseId}/present";
+        public final static String CourseAttendanceAbsent = GetById + "/courses/{courseId}/absent";
     }
 
     public static class Teachers {
