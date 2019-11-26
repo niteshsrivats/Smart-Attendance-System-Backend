@@ -72,15 +72,12 @@ class Detector:
             self.set_attendance(studentId, i)
     
     def set_attendance(self, studentId, courseId):
-        urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}'.format(studentId, courseId)
+        urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}/present'.format(studentId, courseId)
         d = datetime.utcnow()
         unixtime = calendar.timegm(d.utctimetuple())
         print(unixtime)
-        self.auth_header['Content-Type'] = 'application/json'
-        payload = {
-            "time": [int(unixtime)]
-        }
-        response = requests.patch(urlSetAttendance, data= payload, headers= self.auth_header)
+        #self.auth_header['Content-Type'] = 'application/json'
+        response = requests.patch(urlSetAttendance, headers= self.auth_header)
         print(json.loads(response.text))
 
 detector = Detector()
