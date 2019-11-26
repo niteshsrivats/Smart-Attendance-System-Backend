@@ -75,9 +75,10 @@ class Detector:
         urlSetAttendance = 'http://localhost:8080/v1/students/{}/courses/{}'.format(studentId, courseId)
         d = datetime.utcnow()
         unixtime = calendar.timegm(d.utctimetuple())
+        print(unixtime)
         self.auth_header['Content-Type'] = 'application/json'
         payload = {
-            "time": [unixtime]
+            "time": [int(unixtime)]
         }
         response = requests.patch(urlSetAttendance, data= payload, headers= self.auth_header)
         print(json.loads(response.text))
