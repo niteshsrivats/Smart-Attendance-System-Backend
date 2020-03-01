@@ -1,6 +1,6 @@
 package com.remote.exec.central.service.auth;
 
-import com.remote.exec.central.models.User;
+import com.remote.exec.central.models.entities.User;
 import com.remote.exec.central.repository.UserRepository;
 import com.remote.exec.central.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;

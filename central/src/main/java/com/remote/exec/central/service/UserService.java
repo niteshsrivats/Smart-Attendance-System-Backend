@@ -3,7 +3,7 @@ package com.remote.exec.central.service;
 import com.remote.exec.central.exceptions.BadRequestException;
 import com.remote.exec.central.exceptions.DuplicateEntityException;
 import com.remote.exec.central.exceptions.EntityNotFoundException;
-import com.remote.exec.central.models.User;
+import com.remote.exec.central.models.entities.User;
 import com.remote.exec.central.repository.UserRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;

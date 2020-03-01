@@ -1,6 +1,6 @@
 package com.remote.exec.central.security;
 
-import com.remote.exec.central.models.User;
+import com.remote.exec.central.models.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

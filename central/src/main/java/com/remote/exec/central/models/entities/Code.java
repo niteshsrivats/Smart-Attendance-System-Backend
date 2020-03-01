@@ -1,4 +1,4 @@
-package com.remote.exec.central.models;
+package com.remote.exec.central.models.entities;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)

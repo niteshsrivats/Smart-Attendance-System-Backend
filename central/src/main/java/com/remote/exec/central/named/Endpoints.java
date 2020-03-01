@@ -21,4 +21,11 @@ public class Endpoints {
         public final static String SignUp = Base + "/signup";
         public final static String Id = Base + "/{id}";
     }
+
+    public static class Projects {
+        public final static String Base = VersionPrefix + "users";
+        public final static String Login = Base + "/login";
+        public final static String SignUp = Base + "/signup";
+        public final static String Id = Base + "/{id}";
+    }
 }

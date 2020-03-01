@@ -1,6 +1,6 @@
 package com.remote.exec.central.repository;
 
-import com.remote.exec.central.models.User;
+import com.remote.exec.central.models.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

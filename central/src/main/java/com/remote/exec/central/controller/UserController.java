@@ -1,7 +1,7 @@
 package com.remote.exec.central.controller;
 
 
-import com.remote.exec.central.models.User;
+import com.remote.exec.central.models.entities.User;
 import com.remote.exec.central.models.payload.JwtAuthenticationResponse;
 import com.remote.exec.central.models.payload.LoginRequest;
 import com.remote.exec.central.named.Endpoints;
@@ -10,15 +10,12 @@ import com.remote.exec.central.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
