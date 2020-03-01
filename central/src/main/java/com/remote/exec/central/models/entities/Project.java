@@ -2,7 +2,6 @@ package com.remote.exec.central.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.remote.exec.central.models.constants.ProjectType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,8 +21,11 @@ public class Project {
     @Column(nullable = false, unique = true, updatable = false)
     private String id;
 
-    @Enumerated(EnumType.STRING)
-    private ProjectType projectType;
+    @Column(nullable = false)
+    private String name;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    private Metric metric;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     private API api;

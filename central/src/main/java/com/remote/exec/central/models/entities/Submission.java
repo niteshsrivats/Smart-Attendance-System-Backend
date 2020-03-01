@@ -2,6 +2,7 @@ package com.remote.exec.central.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.remote.exec.central.models.constants.Compiler;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +23,8 @@ public class Submission {
     private String id;
 
     @Column(nullable = false, updatable = false)
-    private String compiler;
+    @Enumerated(EnumType.STRING)
+    private Compiler compiler;
 
     @Column(nullable = false, updatable = false)
     private String code;
