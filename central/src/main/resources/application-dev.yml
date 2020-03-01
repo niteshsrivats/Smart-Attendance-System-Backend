@@ -8,6 +8,11 @@ spring:
       connection-test-query: SELECT 1
     type: com.zaxxer.hikari.HikariDataSource
     initialization-mode: always
+#    url: jdbc:postgresql://localhost:5432/CodeExec-dev
+#    data-username: postgres
+#    data-password: a
+#    password:
+
 
   jpa:
     hibernate:
