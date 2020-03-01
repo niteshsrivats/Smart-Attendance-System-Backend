@@ -13,7 +13,6 @@ spring:
 #    data-password: a
 #    password:
 
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,6 +20,10 @@ spring:
     properties:
       dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
+
+  jwt:
+    secret: JWTSuperSecretKey
+    expirationTimeMs: 604800000
 
 server:
   port: 8080
