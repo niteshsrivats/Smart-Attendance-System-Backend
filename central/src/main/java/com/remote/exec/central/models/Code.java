@@ -1,5 +1,9 @@
 package com.remote.exec.central.models;
 
+/**
+ * @author Nitesh (niteshsrivats.k@gmail.com)
+ */
+
 public class Code {
     private String code;
     private String compiler;

@@ -1,7 +1,21 @@
 spring:
-  jackson:
-    time-zone: IST
-    default-property-inclusion: NON_NULL
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql://localhost:5432/CodeExec-prod
+      username: postgres
+      password: postgres
+      maximum-pool-size: 10
+      connection-test-query: SELECT 1
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
 
 server:
   port: 8000
