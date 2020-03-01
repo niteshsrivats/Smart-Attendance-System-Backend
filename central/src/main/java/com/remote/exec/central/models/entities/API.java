@@ -2,9 +2,11 @@ package com.remote.exec.central.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.remote.exec.central.models.constants.APIProperty;
 
 import javax.persistence.*;
 import java.util.List;
+
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)
  */
@@ -23,6 +25,6 @@ public class API {
     @Column(nullable = false)
     private Boolean enable;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ElementCollection
     private List<APIProperty> apiProperties;
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.remote.exec.central.models.constants.CountType;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author Nitesh (niteshsrivats.k@gmail.com)

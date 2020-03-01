@@ -22,8 +22,11 @@ public class Submission {
     private String id;
 
     @Column(nullable = false, updatable = false)
+    private String compiler;
+
+    @Column(nullable = false, updatable = false)
     private String code;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private TestCase testCase;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<SubmissionStats> stats;
 }
