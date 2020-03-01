@@ -5,6 +5,7 @@ import com.remote.exec.central.exceptions.DuplicateEntityException;
 import com.remote.exec.central.exceptions.EntityNotFoundException;
 import com.remote.exec.central.models.entities.User;
 import com.remote.exec.central.repository.UserRepository;
+import com.remote.exec.central.utils.FastIdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,21 +27,16 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
     public User getUserById(String id) {
         if (id == null) {
-            throw new BadRequestException("Student id cannot be null.");
+            throw new BadRequestException("User id cannot be null.");
         }
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
     }
 
-
     @Transactional
     public User addUser(User user) {
-        user.setId(RandomStringUtils.random(5, true, true));
-        if (userRepository.existsById(user.getId())) {
-            throw new DuplicateEntityException(User.class, user.getId());
-        }
+        user.setId(FastIdGenerator.generatoFastId(8, true, false));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

@@ -25,5 +25,8 @@ spring:
     secret: JWTSuperSecretKey
     expirationTimeMs: 604800000
 
+  jackson:
+    default-property-inclusion: non_null
+
 server:
   port: 8080

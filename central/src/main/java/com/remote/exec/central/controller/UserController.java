@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @GetMapping(Endpoints.Users.Id)
-    public User getUser(@PathVariable @NotBlank String id) {
-        return userService.getUserById(id);
+    public User getUserById(@PathVariable @NotBlank String userId) {
+        return userService.getUserById(userId);
     }
 
 //    @GetMapping(Endpoints.Users.Base)
